@@ -1,0 +1,727 @@
+/*
+To-do
+
+fix exit move-it div to lign up with move it button
+*/
+
+main {
+  position: relative;
+  top: 8vh;
+  height: 92vh;
+  width: 100vw;
+  white-space: nowrap;
+}
+
+header {
+  background-color: black;
+  height: 8vh;
+  display: block;
+  position: fixed;
+  width: 100vw;
+  z-index: 5;
+}
+
+button {
+  text-decoration: none;
+  border: none;
+  background-color: rgba(0,0,0,0);
+  font-size: 24px;
+}
+
+button:hover {
+  opacity: .8;
+}
+
+button[disabled]:hover {
+  opacity: 1;
+}
+
+input:focus, button:focus {
+  outline: none;
+}
+
+/*header*/
+.menu-button {
+  height: 100%;
+  width: 58px;
+  margin-left: 3px;
+}
+
+.menu-button:hover {
+  opacity: 1;
+}
+
+.menu-bars {
+  height: 3px;
+  background-color: white;
+  width: 45px;
+}
+
+.menu-bars:before {
+  content: "";
+  display: block;
+  height: 3px;
+  background-color: white;
+  width: 45px;
+  position: relative;
+  bottom: 13px;
+}
+
+.menu-bars:after {
+  content: "";
+  display: block;
+  height: 3px;
+  background-color: white;
+  width: 45px;
+  position: relative;
+  top: 9px;
+}
+
+.menu {
+  position: relative;
+  z-index: 3;
+  bottom: 1px;
+  margin-left: 3px;
+  width: 100px;
+}
+
+.menu button {
+  width: 100px;
+  padding: 10px 20px;
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  background-color: #444;
+  color: white;
+  border-top: 1px solid rgba(255,255,255,.6);
+}
+
+.menu button:hover:enabled {
+  background-color: #6F6F6F;
+  opacity: 1;
+}
+
+.menu button:disabled {
+  color: rgba(255,255,255,.5);
+  background-color: #4F4F4F;
+}
+
+/*register div*/
+.register-gray-out, .sign-in-gray-out {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,.5);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 5;
+}
+
+.exit-register-sign-in {
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  color: rgba(0,0,0,.2);
+  font-size: 24px;
+  text-align: right;
+  margin: 3px 10px 0px 0px;
+}
+
+.exit-register-sign-in:hover {
+  color: rgba(0,0,0,.3);
+}
+
+.register-sign-in-form {
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  position: relative;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-150px, -100px);
+  box-shadow: 5px 10px 30px 0px rgba(0,0,0,.4);
+}
+
+.register-dialogue {
+  text-align: center;
+  font-size: 24px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  margin-top: 0px;
+}
+
+.register-sign-in-form input[type="text"], .register-sign-in-form input[type="password"] {
+  border: 1px solid rgba(0,0,0,.3);
+  font-size: 18px;
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 6px 6px 6px 44px;
+  border-radius: 5px;
+  box-shadow: -1px 1px 2px 0px rgba(0,0,0,.3) inset;
+}
+
+.input-icon {
+  margin-left: 30px;
+  font-size: 28px;
+  position: absolute;
+  transform: translateY(-53px);
+  opacity: .7;
+}
+
+.register-sign-in-form input[type="submit"] {
+  width: 250px;
+  height: 34px;
+  display: block;
+  margin: 40px auto 0px auto;
+  font-size: 18px;
+  border: 1px solid rgba(0,0,0,.3);
+  border-radius: 3px;
+  background-image: linear-gradient(rgba(255,165,0,.5), rgba(255,165,0,1));
+}
+
+.register-sign-in-form input[type="submit"]:hover {
+  background-image: linear-gradient(rgba(255,165,0,.6), rgba(255,165,0,1));
+}
+
+.go-to-register {
+  font-size: 14px;
+  color: blue;
+  margin-top: 8px;
+  position: absolute;
+  right: 0px;
+}
+
+.go-to-register:hover {
+  text-decoration: underline;
+}
+
+/*initial css styling*/
+
+#add-list {
+  vertical-align: top;
+  font-size: 35px;
+  margin: 33px 100px 33px 10px;
+  position: absolute;
+  transition: left 700ms cubic-bezier(.60,-0.27,.21,1.2), color 500ms ease 500ms;
+  padding-right: 100px;
+}
+
+#add-list p {
+  display: inline-block;
+  font-size: 14px;
+  margin: auto auto auto 15px;
+}
+
+.list-buttons {
+  display: inline-block;
+  position: relative;
+}
+
+.list-title {
+  position: relative;
+  text-align: left;
+  bottom: 26px;
+  background-color: rgba(255, 255, 255, .5);
+  padding: 20px 0px 0px 10px;
+  margin: 0px 7px 0px 7px;
+  height: 60px;
+  cursor: text;
+}
+
+.list-title-div {
+  margin-bottom: 0px;
+
+}
+
+.edit-list {
+  position: relative;
+  top: 28px;
+  left: 320px;
+  color: inherit;
+  z-index: 1;
+}
+
+.add-list-div {
+  position: relative;
+  top: 100px;
+}
+
+.list {
+  vertical-align: top;
+  display: inline-block;
+  height: 90vh;
+  width: 380px;
+  margin: 10px;
+  overflow: hidden;
+}
+
+/*edit list div*/
+
+.edit-list-white {
+  background-color: white;
+  position: relative;
+  bottom: 1px;
+  margin: 0px 4px;
+  padding-bottom: 10px;
+  box-shadow: 10px 30px 30px 0px rgba(0,0,0,.4);
+}
+
+.edit-list-white:before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  width: 380px;
+  left: -4px;
+  top: -2px;
+  height: 340px;
+  background-color: rgba(255, 255, 255, .3);
+}
+
+.edit-list-div {
+  height: 340px;
+  position: absolute;
+  transform: translateY(-125px);
+  width: 380px;
+  z-index: 2;
+}
+
+.edit-list-header {
+  text-align: center;
+  font-weight: normal;
+  position: relative;
+  top: 7px;
+  font-weight: normal;
+}
+
+.exit-edit {
+  position: absolute;
+  margin: 7px;
+  left: 0px;
+  font-size: 22px;
+  z-index: 1;
+}
+
+.save-list-edit {
+  font-size: 18px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  margin-top: 7px;
+  margin-right: 3px;
+}
+
+.edit-list-input {
+  border: none;
+  position: relative;
+  border-bottom: 2px solid #ddd;
+  width: 90%;
+  font-size: 33px;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+.edit-list-input::placeholder {
+  color: inherit;
+  font-size: 14px;
+}
+
+.delete-list {
+  position: relative;
+  border-radius: 25px;
+  background-color: white;
+  font-size: 18px;
+  padding: 9px;
+  width: 250px;
+  z-index: 1;
+  top: 70px;
+  left: 60px;
+  color: white;
+
+}
+
+.theme-buttons {
+  position: relative;
+  top: 30px;
+  border-bottom: 1px solid white;
+  margin: 0 3px;
+  padding-left: 7px;
+  overflow: hidden;
+  height: 78px;
+}
+
+.list-theme-header {
+  margin: 0px 0px 5px 10px;
+  color: white;
+  text-align: left;
+}
+
+.outer-theme-circle, .inner-theme-circle, .theme-circle-darker {
+  border-radius: 50%;
+  padding: 0px;
+}
+
+.theme-button-div {
+  display: inline-block;
+  position: relative;
+  bottom: 80px;
+}
+
+.theme-button-circle, .theme-button-circle:before {
+  margin: 15px 13px 15px 15px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.theme-button-circle:before {
+  /*dark colored*/
+  content: "";
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0,0,0,.2);
+}
+
+.theme-button-circle:after {
+  /*center circle*/
+  content: "";
+  position: absolute;
+  display: inline-block;
+  background-color: inherit;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  bottom: 22px;
+  right: 20px;
+}
+
+.selected-theme {
+  width: 50px;
+  position: relative;
+  height: 0px;
+  width: 0px;
+  top: 80px;
+  left: 4px;
+  border-radius: 25px 25px 0 0;
+  border: 25px solid white;
+  border-bottom: 50px solid white;
+  z-index: -1;
+  background-color: white;
+  animation: select-theme-anm 200ms;
+}
+
+.selected-theme:after {
+  content: "";
+  display: block;
+  width: 70px;
+  position: relative;
+  bottom: 18px;
+  right: 36px;
+  height: 10px;
+  background-color: white;
+}
+
+.selected-theme-flare-circles:after, .selected-theme-flare-circles:before {
+  content: "";
+  display: block;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  z-index: 1;
+  background-color: inherit;
+}
+
+.selected-theme-flare-circles:after {
+  right: 45px;
+  border-radius: 50%;
+  bottom: 8px;
+}
+
+.selected-theme-flare-circles:before {
+  left: 25px;
+  border-radius: 50%;
+  top: 12px;
+}
+
+/*list item stuff*/
+
+.list-item-move-it-div-container {
+  position: relative;
+
+}
+
+.list-contents {
+  height: 70vh;
+  overflow: scroll;
+  transform: translateY(20px);
+}
+
+.list-item-div {
+  top: 133px;
+  transition: height 3000ms;
+}
+
+.list-item {
+  display: block;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.add-list-item {
+  position: relative;
+  color: rgba(255,255,255,.4);
+  font-size: 34px;
+  margin-bottom: 30px;
+}
+
+.item-name, .item-note {
+  display: inline-block;
+  color: rgba(255,255,255,.5);
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.item-div {
+  display: flex;
+  position: relative;
+  margin-right: 0px;
+  justify-content: flex-end;
+  background-color: rgba(50,50,50,.2);
+  margin: 10px;
+  padding: 10px;
+  width: 340px;
+}
+
+.item-name {
+  padding-left: 5px;
+  vertical-align: top;
+  margin-right: 7px;
+  min-width: 70px;
+  margin-right: auto;
+}
+
+.item-note {
+  vertical-align: top;
+  flex-grow: 1;
+  padding-left: 7px;
+  border-left: 1px dotted rgba(0,0,0,.3);
+}
+
+.add-list-item-div {
+  position: absolute;
+  transform: translateY(-25px);
+}
+
+.item-edit-buttons button, .item-delete, .save-item-edit, .edit-item-exit {
+  font-size: 14px;
+  color: rgba(255,255,255,.7);
+}
+
+.item-edit-buttons {
+}
+.item-edit {
+}
+
+.move-it-button {
+  width: 60px;
+}
+
+.add-item-name-input, .add-item-notes-input, .edit-list-item-div input {
+  background: rgba(255, 255, 255, .5);
+  text-decoration: none;
+  border: none;
+  font-size: 14px;
+  padding: 2px 0px 0px 2px;
+  margin: 10px;
+}
+
+.add-item-name-input {
+  width: 120px;
+  margin-right: 0px;
+}
+
+.add-item-notes-input {
+  width: 140px;
+}
+
+.add-item-exit, .add-item-save {
+  font-size: 15px;
+  vertical-align: top;
+  margin-top: 10px;
+  color: rgba(255,255,255,.7);
+  text-shadow: 0px 0px inherit;
+}
+
+.add-item-save:hover {
+  background-color: rgba(255,255,255,.5);
+}
+
+.add-item-exit {
+  padding-left: 3px;
+  margin-left: 7px;
+  padding-right: 2px;
+  transform: translate(5px, 7px);
+}
+
+.add-list-item-div input {
+  padding: 10px 0px 5px 5px;
+}
+
+.edit-list-item-div {
+  position: absolute;
+  height: 30px;
+  transform: translate(-5px, -45px);
+
+}
+
+.edit-list-item-div input {
+  height: 28px;
+  position: relative;
+  bottom: 11px;
+
+}
+
+.edit-item-name-input {
+  width: 100px;
+}
+
+.edit-item-exit {
+  transform: translate(10px, -10px);
+}
+
+.save-item-edit, .item-delete {
+  position: absolute;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  width: 54px;
+  text-align: center;
+  left: 310px;
+}
+
+.save-item-edit:hover, .item-delete:hover {
+  background: rgba(255,255,255,.2);
+}
+
+.save-item-edit {
+  top: 16px;
+}
+
+.item-delete {
+  bottom: 17px;
+  padding-right: 6px;
+}
+
+.move-it-div {
+  position: absolute;
+  max-width: 60px;
+  transform: translate(310px,-50px);
+  z-index: 1;
+  background-color: #444;
+}
+
+.list-names {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  color: white;
+  border-top: 1px solid rgba(255,255,255,.6);
+  width: 60px;
+  white-space: normal;
+}
+
+.list-names:hover, .exit-move-it-div:hover {
+  background-color: rgba(0,0,0,.5);
+}
+
+.exit-move-it-div {
+  display: inline-block;
+  font-size: 14px;
+  color: white;
+  height: 40px;
+  width: 60px;
+}
+
+/*transitions*/
+
+@keyframes select-theme-anm {
+  0% {top: 150px;}
+  100% {top: 80px;}
+}
+
+@keyframes move-add-list-button {
+  0% {transform: translateX(0px);}
+  100% {transform: translateX(400px);}
+}
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms;
+}
+
+.new-list-enter {
+  width: 1px;
+  height: 1px;
+  margin-top: 110px;
+}
+
+.new-list-enter.new-list-enter-active {
+  width: 380px;
+  height: 90vh;
+  margin-top: 10px;
+  transition: width 300ms ease-in-out, height 250ms ease-in-out 550ms, margin-top 300ms ease-out 500ms;
+}
+
+.new-list-leave {
+  width: 380px;
+  height: 90vh;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.new-list-leave.new-list-leave-active {
+  width: 1px;
+  height: 1px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 110px;
+  transition: height 300ms ease-in-out, width 400ms ease-out 300ms, margin-top 250ms ease-in-out, margin-left 250ms ease 350ms, margin-right 250ms ease 350ms;
+}
+
+.new-list-item-enter {
+  right: 400px;
+  max-height: 0px;
+}
+
+.new-list-item-enter.new-list-item-enter-active {
+  right: 0px;
+  max-height: 100px;
+  transition: max-height 400ms, right 300ms ease 250ms;
+}
+
+.new-list-item-leave {
+  left: 0px;
+  max-height: 100px;
+}
+
+.new-list-item-leave.new-list-item-leave-active {
+  left: 400px;
+  max-height: 0px;
+  transition: left 300ms, max-height 300ms ease 200ms;
+}
