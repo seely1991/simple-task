@@ -34,7 +34,10 @@ class Home extends Component {
   }
   render() {
     return(
-      <p>Here is Home</p>
+      <div>
+        <Header />
+        <ListApp />
+      </div>
     )
   }
 }
