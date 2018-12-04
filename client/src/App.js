@@ -58,10 +58,10 @@ class Header extends Component {
     this.setState({menu: !this.state.menu});
   }
   toggleSignIn() {
-    this.setState({signIn: !this.state.signIn})
+    this.setState({signIn: !this.state.signIn, menu: false})
   }
   toggleRegister() {
-    this.setState({register: !this.state.register});
+    this.setState({register: !this.state.register, menu: false});
   }
   render() {
     let menu;
@@ -163,7 +163,7 @@ class ListApp extends Component {
     this.setState({lists: listArr, color: getRandomColor()});
   }
   addListItem(item, notes, list) {
-
+    if (!item && !notes) return
     const index = this.state.lists.findIndex(x => JSON.stringify(x) === JSON.stringify(list));
     console.log(index);
     console.log(list);
@@ -263,7 +263,12 @@ class App extends Component {
     }
     render() {
       return(
-        <Home />
+        <Router>
+          <div>
+            <Route path="/" exact={true} component={Home} />
+            <Route path="/projects" component={ListApp} />
+          </div>
+        </Router>
       )
     }
 }

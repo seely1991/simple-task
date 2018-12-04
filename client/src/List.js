@@ -62,7 +62,7 @@ class List extends Component {
     this.setState({addListItemDiv: false})
   }
   toggleEditListDiv() {
-    this.setState({editListDiv: !this.state.editListDiv})
+    this.setState({editListDiv: !this.state.editListDiv, addListItemDiv: false})
   }
   showEditListDiv() {
     this.setState({editListDiv: true});
