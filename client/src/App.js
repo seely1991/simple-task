@@ -263,15 +263,7 @@ class App extends Component {
     }
     render() {
       return(
-        <Router>
-          <div>
-            <Header />
-            <Route path="/register" component={Register} />
-            <Route exact={true} path="/" component={Home} />
-            <Route path="/myLists" component={ListApp} />
-            <Route path="/sign-in" component={SignIn} />
-          </div>
-        </Router>
+        <Home />
       )
     }
 }
