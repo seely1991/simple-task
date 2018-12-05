@@ -40,6 +40,74 @@ input:focus, button:focus {
   outline: none;
 }
 
+/*Home Page*/
+
+.home-black-div {
+  background-color: #222;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  right: 55vw;
+  top: 0px;
+  right: 100vw;
+  animation: stretch-right 600ms ease 50ms 1 normal forwards;
+  z-index: -1;
+}
+
+.home-white-div {
+  display: block;
+  position: absolute;
+  width: 100vw;
+  top: 0px;
+}
+
+.home-title {
+  color: white;
+  font-size: 5em;
+  position: absolute;
+  left: 100px;
+  top: 50px;
+  line-height: 1.5ex;
+}
+
+.home-description {
+  font-size: 1.5em;
+  color: #8982C7;
+  position: absolute;
+  right: -300px;
+  top: 115px;
+  width: 440px;
+  font-weight: 600;
+  opacity: 0;
+  animation: fade 600ms ease 400ms 1 normal forwards;
+}
+
+.login-button {
+  position: absolute;
+  right: 100px;
+  top: 155px;
+  border-radius: 50%;
+  border: 3px solid red;
+  width: 70px;
+  height: 70px;
+  font-size: 17px;
+  color: red;
+  padding-bottom: 10px;
+  font-weight: 600;
+  opacity: 0;
+  transition: background-color 150ms, transform 100ms, content 1ms ease 400ms;
+  animation: fade 600ms ease 200ms 1 normal forwards;
+}
+
+.login-button:hover {
+  background-color: rgba(255,0,0,.2);
+}
+
+.login-button:active {
+  transform: scale(.97);
+  background-color: red;
+}
+
 /*header*/
 .menu-button {
   height: 100%;
@@ -654,6 +722,16 @@ input:focus, button:focus {
 @keyframes move-add-list-button {
   0% {transform: translateX(0px);}
   100% {transform: translateX(400px);}
+}
+
+@keyframes stretch-right {
+  0% {right: 100vw;}
+  100% {right: 55vw;}
+}
+
+@keyframes fade {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 .fade-enter {

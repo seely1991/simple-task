@@ -30,6 +30,44 @@ function getRandomColor() {
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      signIn: false,
+      register: false
+    };
+    this.toggleSignIn=this.toggleSignIn.bind(this);
+    this.toggleRegister=this.toggleRegister.bind(this);
+  }
+  toggleSignIn() {
+    this.setState({signIn: !this.state.signIn, register: false});
+  }
+  toggleRegister() {
+    this.setState({signIn: false, register: !this.state.register})
+  }
+  render() {
+    let inputs;
+    if (this.state.signIn) {
+      inputs = <SignIn toggleRegister={this.toggleRegister} toggleSignIn={this.toggleSignIn}/>
+    }else if (this.state.register) {
+      inputs = <Register toggleRegister={this.toggleRegister} />
+    }
+    return(
+      <div className="home-white-div">
+        <h1 className="home-title">Simple<br/>Task</h1>
+        {inputs}
+        <button className="login-button" onClick={this.toggleSignIn} type="button">Login</button>
+        <div className="home-black-div">
+          <p className="home-description">A simple list making, item creating, 
+          progress tool that will help you <br/>
+          organize a project from beginning to end</p>
+        </div>
+      </div>
+    )
+  }
+}
+
+class FullApp extends Component {
+  constructor(props) {
+    super(props);
     this.state = {};
   }
   render() {
