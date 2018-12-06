@@ -45,13 +45,25 @@ input:focus, button:focus {
 .home-black-div {
   background-color: #222;
   height: 100vh;
-  width: 100vw;
+  width: 0px;
   position: absolute;
-  right: 55vw;
   top: 0px;
-  right: 100vw;
-  animation: stretch-right 600ms ease 50ms 1 normal forwards;
+  left: 0px;
   z-index: -1;
+  transition: right 600ms;
+}
+
+.stretch-right {
+ animation: stretch-right 600ms ease 50ms 1 normal forwards;
+}
+
+.stretch-left {
+  right: 55vw;
+  animation: stretch-left 600ms ease 0ms 1 normal forwards;
+}
+
+.stretch-right-less {
+  animation: stretch-right-less 600ms ease 0ms 1 normal forwards;
 }
 
 .home-white-div {
@@ -65,7 +77,7 @@ input:focus, button:focus {
   color: white;
   font-size: 5em;
   position: absolute;
-  left: 100px;
+  left: 50px;
   top: 50px;
   line-height: 1.5ex;
 }
@@ -78,8 +90,6 @@ input:focus, button:focus {
   top: 115px;
   width: 440px;
   font-weight: 600;
-  opacity: 0;
-  animation: fade 600ms ease 400ms 1 normal forwards;
 }
 
 .login-button {
@@ -106,6 +116,93 @@ input:focus, button:focus {
 .login-button:active {
   transform: scale(.97);
   background-color: red;
+}
+
+.go-to-register {
+  position: absolute;
+  right: 90px;
+  top: 200px;
+  font-size: 14px;
+  width: 90px;
+  color: blue;
+  display: block;
+  margin-top: 150px;
+}
+
+.go-to-register:hover {
+  text-decoration: underline;
+}
+
+/*Profile*/
+
+.user-letter {
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  color: rgba(0,0,0,.4);
+  font-size: 70px;
+  text-align: center;
+  margin: 130px 10px 10px 30px;
+  display: inline-block;
+}
+
+.user-email-and-logout {
+  color: rgba(255,255,255,.7);
+  display: inline-block;
+  margin-left: 25px;
+}
+
+.logout {
+  color: inherit;
+  margin-top: 20px;
+  font-size: 16px;
+  display: block;
+  padding: 0px;
+  font-weight: 600;
+}
+
+.your-projects {
+  font-weight: 600;
+  color: white;
+  margin-left: 15px;
+  display: block;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  padding-bottom: 13px;
+  margin-right: 15px;
+}
+
+.project-list {
+  position: absolute;
+  width: 40vw;
+}
+
+.project-name, .project-date, .project-name, .project-date {
+  color: white;
+  display: inline-block;
+  width: 16vw;
+  margin: 5px 5% 5px 5%;
+}
+
+.new-project {
+  margin: 30px 10px 100px 10px;
+  color: white;
+  display: inline-block;
+  font-size: 40px;
+}
+
+.new-project p {
+  margin-left: 20px;
+  transform: translateY(-8px);
+  display: inline-block;
+  font-size: 15px;
+}
+
+.project-name {
+
+}
+
+.project-date {
+
 }
 
 /*header*/
@@ -175,94 +272,48 @@ input:focus, button:focus {
 }
 
 /*register div*/
-.register-gray-out, .sign-in-gray-out {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,0,.5);
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 5;
-}
-
-.exit-register-sign-in {
-  display: inline-block;
-  position: absolute;
-  right: 0px;
-  color: rgba(0,0,0,.2);
-  font-size: 24px;
-  text-align: right;
-  margin: 3px 10px 0px 0px;
-}
-
-.exit-register-sign-in:hover {
-  color: rgba(0,0,0,.3);
-}
 
 .register-sign-in-form {
-  width: 300px;
-  height: 300px;
-  background-color: white;
-  position: relative;
-  z-index: 5;
-  left: 50%;
-  top: 50%;
-  transform: translate(-150px, 100px);
-  box-shadow: 5px 10px 30px 0px rgba(0,0,0,.4);
-}
-
-.register-dialogue {
-  text-align: center;
-  font-size: 24px;
-  padding-top: 30px;
-  padding-bottom: 20px;
-  margin-top: 0px;
-}
-
-.register-sign-in-form input[type="text"], .register-sign-in-form input[type="password"] {
-  border: 1px solid rgba(0,0,0,.3);
-  font-size: 18px;
-  display: block;
-  width: 200px;
-  margin: 20px auto;
-  padding: 6px 6px 6px 44px;
-  border-radius: 5px;
-  box-shadow: -1px 1px 2px 0px rgba(0,0,0,.3) inset;
-}
-
-.input-icon {
-  margin-left: 30px;
-  font-size: 28px;
   position: absolute;
-  transform: translateY(-53px);
-  opacity: .7;
+  right: 240px;
+  top: 130px;
 }
 
-.register-sign-in-form input[type="submit"] {
-  width: 250px;
-  height: 34px;
-  display: block;
-  margin: 40px auto 0px auto;
+.register-name, .register-password, .register-email {
+  right: 0px;
+  transform: translateY(10px);
+  border: none;
+  border-bottom: 2px solid rgba(0,0,0,.6);
+  margin-top: 13px;
   font-size: 18px;
-  border: 1px solid rgba(0,0,0,.3);
-  border-radius: 3px;
-  background-image: linear-gradient(rgba(255,165,0,.5), rgba(255,165,0,1));
+  width: 0px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  animation: slide-left 300ms ease 0ms 1 normal forwards;
+} 
+
+.register-password, .register-email {
+  top: 48px;
 }
 
-.register-sign-in-form input[type="submit"]:hover {
-  background-image: linear-gradient(rgba(255,165,0,.6), rgba(255,165,0,1));
+.register-password {
+  top: 95px;
 }
 
-.go-to-register {
-  font-size: 14px;
-  color: blue;
-  margin-top: 8px;
+.register-sign-in-inputs {
   position: absolute;
   right: 0px;
 }
 
-.go-to-register:hover {
-  text-decoration: underline;
+.register-sign-in-labels {
+  position: absolute;
+  right: 250px;
+}
+
+.register-name-label, .register-password-label, .register-email-label {
+  color: red;
+  display: block;
+  margin-top: 30px;
 }
 
 /*initial css styling*/
@@ -725,13 +776,45 @@ input:focus, button:focus {
 }
 
 @keyframes stretch-right {
-  0% {right: 100vw;}
-  100% {right: 55vw;}
+  0% {width: 0vw;}
+  100% {width: 44vw;}
+}
+
+@keyframes stretch-right-less {
+  0% {width: 35vw;}
+  100% {width: 40vw;}
+}
+
+@keyframes stretch-left {
+  0% {width: 44vw;}
+  100% {width: 35vw;}
 }
 
 @keyframes fade {
   0% {opacity: 0;}
   100% {opacity: 1;}
+}
+
+@keyframes slide-left {
+  0% {
+    width: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  100% {
+    width: 200px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+.fade-appear {
+  opacity: 0.01;
+}
+
+.fade-appear.fade-appear-active {
+  opacity: 1;
+  transition: opacity 300ms ease 400ms;
 }
 
 .fade-enter {

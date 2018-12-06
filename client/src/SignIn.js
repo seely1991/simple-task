@@ -67,18 +67,25 @@ class Register extends Component {
     .then(res => console.log(res))
   }
   render() {
+    let emailInput;
+    let emailLabel;
+    if (this.props.register) {
+      emailInput = <input id="email" className="register-email" type="text" onChange={this.props.onChange} name="email" />;
+      emailLabel = <label for="email" className="register-email-label">Email</label>
+    }
     return (
       <div className="sign-in-div">
-        <div className="sign-in-gray-out" onClick={this.props.toggleSignIn}></div>
         <form className="register-sign-in-form" onSubmit={this.handleSubmit}>
-          <div className="exit-register-sign-in" onClick={this.props.toggleSignIn}><FontAwesomeIcon icon="times" /></div>
-          <p className="register-dialogue">Sign In</p>
-          <input className="register-name" type="text" onChange={this.onChange} name="name" placeholder="username" />
-          <div className="input-icon"><FontAwesomeIcon icon="user"/></div>
-          <input className="register-password" type="password" onChange={this.onChange} name="password" placeholder="password" />
-          <div className="input-icon"><FontAwesomeIcon icon="lock"/></div>
-          <input className="register-submit" type="submit" value="Sign In" onSubmit={this.handleSubmit} />
-          <button className="go-to-register" type="button" onClick={() => {this.props.toggleSignIn(); this.props.toggleRegister()}}>register an account</button>
+          <div className="register-sign-in-labels">
+            <label for="name" className="register-name-label">Username</label>
+            {emailLabel}
+            <label for="password" className="register-password-label">Password</label>
+          </div>
+          <div className="register-sign-in-inputs">
+            <input id="name" className="register-name" type="text" onChange={this.props.onChange} name="name" />
+            {emailInput}
+            <input id="password" className="register-password" type="password" onChange={this.props.onChange} name="password" />
+          </div>
         </form>
       </div>
 

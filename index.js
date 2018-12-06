@@ -25,7 +25,9 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
 	name: String,
 	email: String,
-	password: String
+	password: String,
+	projects: [],
+	profileColor: String
 })
 var user = mongoose.model('list_user', userSchema);
 
@@ -47,16 +49,46 @@ app.post('/register', (req, res, next) => {
 		var newUser = new user({
 			name: req.body.name,
 			password: hashedPassword,
-			author: req.body.author
+			email: req.body.email,
+			profileColor: req.body.profileColor
 		})
 		newUser.save((err, data) => {
 			console.log({data: data})
 			var token = jwt.sign({ id: data._id }, process.env.SECRET, {
 				expiresIn: 86400
 			});
-			res.status(200).send({ auth: true, token: token});
+			userData = {
+				name: data.name,
+				email: data.email,
+				projects: data.projects,
+				profileColor: data.profileColor
+			}
+			res.status(200).json({ auth: true, token: token, userData: userData});
 		});
 	});
+
+app.get('/signIn', (req, res, next) => {
+	console.log({
+		name: req.query.name,
+		password: req.query.password
+	})
+	user.findOne({name: req.query.name}, (err, data) => {
+		if (err) return res.status(500).send("there was a problem finding the user");
+		if (!data) return res.status(404).send("no user found");
+		var isPassword = bcrypt.compareSync(req.query.password, data.password);
+		console.log({isPassword: isPassword});
+		var token = jwt.sign({ id: data._id }, process.env.SECRET, {
+			expiresIn: 86400
+		});
+		userData = {
+			name: data.name,
+			email: data.email,
+			projects: data.projects,
+			profileColor: data.profileColor
+		}
+		res.status(200).json({ auth: true, token: token, userData: userData });
+	})
+})
 
 app.get('/me', (req, res, next) => {
 	var token = req.headers['x-access-token'];
