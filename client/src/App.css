@@ -6,8 +6,7 @@ fix exit move-it div to lign up with move it button
 
 main {
   position: relative;
-  top: 8vh;
-  height: 92vh;
+  height: 100vh;
   width: 100vw;
   white-space: nowrap;
 }
@@ -316,12 +315,21 @@ input:focus, button:focus {
   margin-top: 30px;
 }
 
+.project-title {
+  border: none;
+  display: block;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  font-size: 40px;
+}
+
 /*initial css styling*/
 
 #add-list {
   vertical-align: top;
   font-size: 35px;
-  margin: 33px 100px 33px 10px;
+  margin: 60px 100px 33px 10px;
   position: absolute;
   transition: left 700ms cubic-bezier(.60,-0.27,.21,1.2), color 500ms ease 500ms;
   padding-right: 100px;
@@ -372,7 +380,7 @@ input:focus, button:focus {
   display: inline-block;
   height: 90vh;
   width: 380px;
-  margin: 10px;
+  margin: 50px 10px 10px 10px;
   overflow: hidden;
 }
 
@@ -573,7 +581,7 @@ input:focus, button:focus {
 }
 
 .list-contents {
-  height: 70vh;
+  height: 73vh;
   overflow: scroll;
   transform: translateY(20px);
 }
@@ -596,11 +604,18 @@ input:focus, button:focus {
   margin-bottom: 30px;
 }
 
-.item-name, .item-note {
+.item-note {
+  border: none;
   display: inline-block;
   color: rgba(255,255,255,.5);
-  overflow-wrap: break-word;
-  white-space: normal;
+  font-size: 18px;
+  background-color: rgba(255,255,255,0);
+  vertical-align: top;
+  white-space: nowrap;
+  flex-grow: 1;
+  outline: none;
+  resize: none;
+  overflow: auto;
 }
 
 .item-div {
@@ -620,13 +635,6 @@ input:focus, button:focus {
   margin-right: 7px;
   min-width: 70px;
   margin-right: auto;
-}
-
-.item-note {
-  vertical-align: top;
-  flex-grow: 1;
-  padding-left: 7px;
-  border-left: 1px dotted rgba(0,0,0,.3);
 }
 
 .add-list-item-div {
@@ -712,12 +720,7 @@ input:focus, button:focus {
 }
 
 .save-item-edit, .item-delete {
-  position: absolute;
-  padding-bottom: 0px;
-  padding-top: 0px;
-  width: 54px;
-  text-align: center;
-  left: 310px;
+ 
 }
 
 .save-item-edit:hover, .item-delete:hover {
@@ -729,8 +732,6 @@ input:focus, button:focus {
 }
 
 .item-delete {
-  bottom: 17px;
-  padding-right: 6px;
 }
 
 .move-it-div {

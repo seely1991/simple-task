@@ -3,7 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog } from '@fortawesome/free-solid-svg-icons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import ListItem from './ListItem.js';
+import ListItem from './NewListItem.js';
 
 library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog);
 
@@ -50,7 +50,6 @@ class List extends Component {
     this.toggleMoveItDiv=this.toggleMoveItDiv.bind(this);
     this.showEditListDiv=this.showEditListDiv.bind(this);
   }
-
   toggleAddListItemDiv() {
     this.setState({
       addListItemDiv: !this.state.addListItemDiv,
@@ -81,6 +80,7 @@ class List extends Component {
     if (this.props.data.items) {
       items=this.props.data.items.map(x => (
         <ListItem item={x} 
+        key={x.id}
         deleteListItem={() => this.props.deleteListItem(this.props.data, x)} 
         assignToList={this.props.assignToList} 
         list={this.props.data} 
@@ -131,7 +131,7 @@ class List extends Component {
               </ReactCSSTransitionGroup>
             </div>
             <div className="add-list-item-button-div">
-              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={this.toggleAddListItemDiv}><FontAwesomeIcon icon="plus-circle" /></button>
+              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={() => this.props.addListItem(this.props.data)}><FontAwesomeIcon icon="plus-circle" /></button>
             </div>
           </div>
       )

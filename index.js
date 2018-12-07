@@ -72,7 +72,7 @@ app.get('/signIn', (req, res, next) => {
 		name: req.query.name,
 		password: req.query.password
 	})
-	user.findOne({name: req.query.name}, (err, data) => {
+	user.findOne({name: req.query.name}, {password: 0}, (err, data) => {
 		if (err) return res.status(500).send("there was a problem finding the user");
 		if (!data) return res.status(404).send("no user found");
 		var isPassword = bcrypt.compareSync(req.query.password, data.password);
@@ -80,13 +80,8 @@ app.get('/signIn', (req, res, next) => {
 		var token = jwt.sign({ id: data._id }, process.env.SECRET, {
 			expiresIn: 86400
 		});
-		userData = {
-			name: data.name,
-			email: data.email,
-			projects: data.projects,
-			profileColor: data.profileColor
-		}
-		res.status(200).json({ auth: true, token: token, userData: userData });
+		//check that {password: 0} makes it not show up
+		res.status(200).json({ auth: true, token: token, userData: data });
 	})
 })
 
@@ -105,6 +100,15 @@ app.get('/me', (req, res, next) => {
 		})
 	});
 });
+
+app.put('/update', (req, res) => {
+	//finish this for saving
+	user.findOne({req.query.name})
+})
+
+app.put('/create-new', (req, res) => {
+	//finish for making a new project
+})
 
 
 app.get('*', (req, res) => {
