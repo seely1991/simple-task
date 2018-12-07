@@ -103,7 +103,7 @@ app.get('/me', (req, res, next) => {
 
 app.put('/update', (req, res) => {
 	//finish this for saving
-	user.findOne({req.query.name})
+	//user.findOne({req.query.name})
 })
 
 app.put('/create-new', (req, res) => {
