@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog } from '@fortawesome/free-solid-svg-icons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ListItem from './NewListItem.js';
+import Textarea from 'react-textarea-autosize';
 
 library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog);
 
@@ -142,8 +143,8 @@ class List extends Component {
     return(
       <div className="list" style={{backgroundColor: this.props.data.color, color: this.props.data.color}}>
         <div className="list-title-div">
-          <button className="edit-list" onClick={this.toggleEditListDiv}><FontAwesomeIcon icon="cog"/></button> 
-          <h1 className="list-title" onClick={this.showEditListDiv}>{this.props.data.title}</h1>
+          <input autocomplete="off" type="text" className="list-title" name="title" defaultValue={this.props.data.title} onChange={(event) => {this.props.editList(this.props.data, event.target.value)}} />
+          <button className="edit-list" onClick={this.toggleEditListDiv}><FontAwesomeIcon icon="cog"/></button>
           <ReactCSSTransitionGroup
             transitionName="fade"
             transitionEnterTimeout={300}

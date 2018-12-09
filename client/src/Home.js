@@ -98,7 +98,23 @@ class Home extends Component {
   }
   newProject() {
     let token = this.state.token;
-    window.location = "/project/" + encodeURIComponent(token) + "/" + "untitled" ;
+    let body = {
+
+    }
+    fetch('/create-new', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': token
+      }
+    })
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+      window.location = '/project/' + encodeURIComponent(token) + '/' + encodeURIComponent(res.listId);
+    })
+    
   }
   logout() {
     window.localStorage.setItem('token', null);
@@ -137,9 +153,9 @@ class Home extends Component {
       blackDivAnm = "stretch-right-less";
       loginButton = null;
       let projects = this.state.userData.projects.map(x => (
-        <a className="project-link" href={'/project/' + x.name}>
-          <p className="project-name">{x.name}</p>
-          <p className="project-date">{x.updated}</p>
+        <a className="project-link" href={'/project/' + encodeURIComponent(this.state.token) + '/' + encodeURIComponent(x._id)}>
+          <p className="project-name">{x.title}</p>
+          <p className="project-date">{(new Date(x.updated)).toLocaleDateString().replace(/\//g,'.')}</p>
         </a>
       ));
 
@@ -152,7 +168,7 @@ class Home extends Component {
           </div>
           <p className="your-projects">Your projects</p>
           <div className="project-list">
-            <p className="project-name">Name</p><p className="project-date">last Updated</p>
+            <p className="project-name-col">Name</p><p className="project-date-col">last Updated</p>
             {projects}
             <button className="new-project" onClick={this.newProject}><FontAwesomeIcon icon="plus-circle" /><p>New Project</p></button>
           </div>

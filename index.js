@@ -31,6 +31,13 @@ var userSchema = new Schema({
 })
 var user = mongoose.model('list_user', userSchema);
 
+var projectSchema = new Schema({
+	title: String,
+	lists: [],
+	updated: String
+})
+var project = mongoose.model('list_project', projectSchema);
+
 app.post('/register', (req, res, next) => {
 	console.log('started')
 	user.findOne({name: req.body.name}, (err, data) => {
@@ -50,6 +57,7 @@ app.post('/register', (req, res, next) => {
 			name: req.body.name,
 			password: hashedPassword,
 			email: req.body.email,
+			projects: [],
 			profileColor: req.body.profileColor
 		})
 		newUser.save((err, data) => {
@@ -72,7 +80,8 @@ app.get('/signIn', (req, res, next) => {
 		name: req.query.name,
 		password: req.query.password
 	})
-	user.findOne({name: req.query.name}, {password: 0}, (err, data) => {
+	user.findOne({name: req.query.name}, (err, data) => {
+		console.log(data);
 		if (err) return res.status(500).send("there was a problem finding the user");
 		if (!data) return res.status(404).send("no user found");
 		var isPassword = bcrypt.compareSync(req.query.password, data.password);
@@ -80,8 +89,14 @@ app.get('/signIn', (req, res, next) => {
 		var token = jwt.sign({ id: data._id }, process.env.SECRET, {
 			expiresIn: 86400
 		});
+		var userData = {
+			name: data.name,
+			email: data.email,
+			projects: data.projects,
+			profileColor: data.profileColor
+		}
 		//check that {password: 0} makes it not show up
-		res.status(200).json({ auth: true, token: token, userData: data });
+		res.status(200).json({ auth: true, token: token, userData: userData });
 	})
 })
 
@@ -102,12 +117,57 @@ app.get('/me', (req, res, next) => {
 });
 
 app.put('/update', (req, res) => {
+	var token = req.headers['x-access-token'];
+	jwt.verify(token, process.env.SECRET, (err, decoded) => {
+		if (err) {
+			return res.status(500).send({ auth: false, message: 'failed to authenticate token'})
+		}
+		user.findById(decoded.id, { password: 0 }, (err, data) => {
+			if (err) return res.status(500).send("there was a problem finding the user");
+			if (!data) return res.status(404).send("no user found");
+			let projectIndex = data.projects.findIndex(x => x._id.toString() === req.body.listId);
+			let newProject = {
+				title: req.body.title,
+				lists: req.body.lists,
+				updated: req.body.updated,
+				_id: data.projects[projectIndex]._id
+			}
+			data.projects[projectIndex] = newProject;
+			data.markModified("projects");
+			data.save((err, data) => {
+				console.log("saved")
+				res.status(200).send("saved")
+			});
+		})
+	})
 	//finish this for saving
 	//user.findOne({req.query.name})
 })
 
 app.put('/create-new', (req, res) => {
-	//finish for making a new project
+	var token = req.headers['x-access-token'];
+	jwt.verify(token, process.env.SECRET, (err, decoded) => {
+		if (err) {
+			return res.status(500).send({ auth: false, message: 'failed to authenticate token'}) 
+		}
+		user.findById(decoded.id, { password: 0 }, (err, data) => {
+			if (err) return res.status(500).send("there was a problem finding the user");
+			if (!data) return res.status(404).send('no user found');
+			let updated = new Date(Date.now());
+			updated = updated.toISOString();
+			newProject = new project({
+				title: 'untitled',
+				lists: [],
+				updated: updated
+			});
+			console.log(newProject);
+			data.projects.push(newProject);
+			data.save((err, data) => {
+				console.log(data)
+				res.status(200).json({ auth: true, token: token, userData: data, listId: newProject._id })
+			});
+		})
+	})
 })
 
 

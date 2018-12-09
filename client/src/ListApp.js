@@ -51,6 +51,8 @@ class ListApp extends Component {
     this.assignToList=this.assignToList.bind(this);
     this.editListItem=this.editListItem.bind(this);
     this.changeTheme=this.changeTheme.bind(this);
+    this.updateProject=this.updateProject.bind(this);
+    this.saveToServer=this.saveToServer.bind(this);
     //this.addListItem=this.addListItem.bind(this);
   }
   getRandomKey(suffix) {
@@ -73,7 +75,31 @@ class ListApp extends Component {
       }
     }
   }
+  updateProject() {
+    let body = {
+      title: this.state.title,
+      lists: this.state.lists,
+      updated: this.state.updated,
+      listId: this.props.match.params.id
+    };
+    fetch('/update', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': this.props.match.params.token
+      },
+      body: JSON.stringify(body)
+    })
+    .then(res => res.text())
+    .then(res => console.log(res))
+  }
+  saveToServer() {
+    clearTimeout(this.saving);
+    this.saving = setTimeout(this.updateProject, 2000);
+  }
   onChange(event) {
+    this.saveToServer();
     this.setState({[event.target.name]: event.target.value});
     console.log({state: this.state})
   }
@@ -87,6 +113,7 @@ class ListApp extends Component {
       key: this.getRandomKey('li')
     });
     this.setState({lists: listArr, color: getRandomColor()});
+    this.saveToServer();
   }
   addListItem(list, value) {
     if (!value) {let value=""}
@@ -97,13 +124,15 @@ class ListApp extends Component {
       value: value,
       id: this.getRandomKey("item")
     })
-    this.setState({lists: listArr})
+    this.setState({lists: listArr});
+    this.saveToServer();
   }
   deleteList(list) {
     const listArr = this.state.lists;
     const index = listArr.indexOf(list);
     listArr.splice(index, 1);
     this.setState({lists: listArr});
+    this.saveToServer();
   }
   deleteListItem(list, item) {
     console.log('did something')
@@ -115,7 +144,8 @@ class ListApp extends Component {
     listItems.splice(itemIndex, 1);
     thisList.items = listItems;
     listArr.splice(listIndex, 1, thisList);
-    this.setState({lists: listArr})
+    this.setState({lists: listArr});
+    this.saveToServer();
   }
   editList(list, title) {
     if (!title) {return}
@@ -124,11 +154,13 @@ class ListApp extends Component {
     list.title = title;
     listArr.splice(index, 1, list);
     this.setState({lists: listArr});
+    this.saveToServer();
   }
   assignToList(currentList, newList, item) {
     console.log(item);
     this.addListItem(newList, item.value);
     this.deleteListItem(currentList, item);
+    this.saveToServer();
   }
   editListItem(list, value, id) {
     const listArr = this.state.lists;
@@ -137,7 +169,8 @@ class ListApp extends Component {
     list.items[itemIndex].value = value;
     listArr[listIndex] = list;
     this.setState({lists: listArr});
-    console.log({editedList: this.state})
+    console.log({editedList: this.state});
+    this.saveToServer();
   }
   asdeditListItem(list, value, id) {
     const listArr = this.state.lists;
@@ -150,6 +183,7 @@ class ListApp extends Component {
     list.color = color;
     listArr.splice(listIndex, 1, list);
     this.setState({lists: listArr});
+    this.saveToServer();
   }
   saveList() {
 
@@ -167,13 +201,22 @@ class ListApp extends Component {
       })
       .then(res => res.text())
       .then(res => {
-        this.setState({userData: res});
-        console.log({res: JSON.parse(res)})
-    })
+        if (this.props.match.params.id) {
+          res = JSON.parse(res);
+          const project = res.projects.filter(x => x._id === this.props.match.params.id)[0];
+          console.log({project: project})
+          this.setState({
+            userData: res,
+            lists: project.lists,
+            title: project.title,
+            updated: project.updated
+          });
+          console.log({state: this.state})
+        }
+      })
     }
   }
   render() {
-    console.log(this.state)
     let lists = this.state.lists.map((x, y) => {
       return(
           <List lists={this.state.lists} 
