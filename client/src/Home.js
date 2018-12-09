@@ -116,8 +116,28 @@ class Home extends Component {
     })
     
   }
+  componentDidMount() {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      fetch('/me', {
+        headers: {
+          "x-access-token": token
+        }
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.projects) {
+          this.setState({
+            token: token,
+            userData: res,
+            profile: true
+          })
+        }
+      })
+    }
+  }
   logout() {
-    window.localStorage.setItem('token', null);
+    window.localStorage.removeItem('token');
     window.location = "/";
   }
   render() {
@@ -127,13 +147,16 @@ class Home extends Component {
     let loginButton = <button className="login-button" onClick={this.toggleSignIn} type="button"><div>Login</div></button>;
     let goToRegister;
     let blackDivAnm = "stretch-right";
-    let description = (
-      <p className="home-description">
-        A simple list making, item creating, 
-        progress tool that will help you <br/>
-        organize a project from beginning to end
-      </p>
-    );
+    let description;
+    if (!window.localStorage.getItem('token')) {
+      description = (
+        <p className="home-description">
+          A simple list making, item creating, 
+          progress tool that will help you <br/>
+          organize a project from beginning to end
+        </p>
+      )
+    }
     if (this.state.signIn || this.state.register) {
       description = null;
       blackDivAnm = "stretch-left";
@@ -148,6 +171,7 @@ class Home extends Component {
       loginButton = <button className="login-button" onClick={this.registerSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
     }
     if (this.state.userData) {
+      console.log({state: this.state})
       console.log('buidling profile')
       title = null;
       blackDivAnm = "stretch-right-less";
