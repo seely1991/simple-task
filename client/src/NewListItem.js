@@ -63,7 +63,7 @@ class ListItem extends Component {
     return(
       <div className="list-item-move-it-div-container">
         <div className="item-div">
-          <Textarea className="item-note" defaultValue={this.props.item.value} onChange={(event) => this.props.editListItem(this.props.list, event.target.value, this.props.item.id)}/>
+          <Textarea onFocus={(event) => event.target.select()} className="item-note" defaultValue={this.props.item.value} onChange={(event) => this.props.editListItem(this.props.list, event.target.value, this.props.item.id)}/>
           <div className="item-edit-buttons" style={{visibility: visible}}>
             <button className="move-it-button" disabled={this.props.lists.length < 2} onClick={this.toggleMoveItDiv}>move it</button>
             <button className="item-delete" onClick={this.props.deleteListItem}><FontAwesomeIcon icon="trash" /></button>

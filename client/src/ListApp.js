@@ -17,6 +17,7 @@ import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faC
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ListItem from './ListItem.js';
 import List from './List';
+import Profile from './Profile.js';
 
 library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars);
 
@@ -39,7 +40,8 @@ class ListApp extends Component {
       title: this.props.match.params.title,
       lists: [],
       editListDiv: false,
-      color: ''
+      color: '',
+      menu: false
     };
     this.getRandomKey=this.getRandomKey.bind(this);
     this.onChange=this.onChange.bind(this);
@@ -53,6 +55,7 @@ class ListApp extends Component {
     this.changeTheme=this.changeTheme.bind(this);
     this.updateProject=this.updateProject.bind(this);
     this.saveToServer=this.saveToServer.bind(this);
+    this.toggleMenu=this.toggleMenu.bind(this);
     //this.addListItem=this.addListItem.bind(this);
   }
   getRandomKey(suffix) {
@@ -188,6 +191,9 @@ class ListApp extends Component {
   saveList() {
 
   }
+  toggleMenu() {
+    this.setState({menu: !this.state.menu})
+  }
   componentWillMount() {
     this.setState({color: getRandomColor()})
   }
@@ -233,16 +239,33 @@ class ListApp extends Component {
           />
       )
     })
+    let profile;
+    let menuClass = "menu"
+    if (this.state.menu) {
+      profile = <Profile userData={this.state.userData} token={this.props.match.params.token} />;
+      menuClass = "menu menu-longer"
+    }
     return(
       <main>
-        <input type="text" className="project-title" name="title" onChange={this.onChange} defaultValue={this.state.title} />
-        <ReactCSSTransitionGroup
-            transitionName="new-list"
-            transitionEnterTimeout={900}
-            transitionLeaveTimeout={700}>
-          {lists}
-        </ReactCSSTransitionGroup>
-        <button key="add-list-button" style={{left: this.state.lists.length*400 + "px", color: this.state.color}} id="add-list" onClick={this.addList}><FontAwesomeIcon icon="plus-circle" /><p>Create New List</p></button>
+        <input type="text" onFocus={(event) => event.target.select()} autocomplete="off" className="project-title" name="title" onChange={this.onChange} defaultValue={this.state.title} />
+        <div className={menuClass}>
+          <button className="menu-button" onClick={this.toggleMenu}><div className="menu-bars"></div></button>
+          <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={900}
+              transitionLeaveTimeout={700}>
+            {profile}
+          </ReactCSSTransitionGroup>
+        </div>
+        <div className="lists">
+          <ReactCSSTransitionGroup
+              transitionName="new-list"
+              transitionEnterTimeout={900}
+              transitionLeaveTimeout={700}>
+            {lists}
+          </ReactCSSTransitionGroup>
+          <button key="add-list-button" style={{left: this.state.lists.length*400 + 60 + "px", color: this.state.color}} id="add-list" onClick={this.addList}><FontAwesomeIcon icon="plus-circle" /><p>Create New List</p></button>
+        </div>
       </main>
     )
   }

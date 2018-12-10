@@ -174,6 +174,7 @@ input:focus, button:focus {
 .project-list {
   position: absolute;
   width: 40vw;
+  white-space: normal;
 }
 
 .project-name, .project-date, .project-name-col, .project-date-col {
@@ -213,9 +214,15 @@ input:focus, button:focus {
 
 /*header*/
 .menu-button {
-  height: 100%;
-  width: 58px;
+  position: absolute;
+  height: 50px;
   margin-left: 3px;
+  width: 100px;
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  color: white;
+  right: -46px;
 }
 
 .menu-button:hover {
@@ -224,57 +231,56 @@ input:focus, button:focus {
 
 .menu-bars {
   height: 3px;
-  background-color: white;
-  width: 45px;
+  background-color: #D36E51;
+  width: 30px;
+  border-radius: 2px;
 }
 
 .menu-bars:before {
   content: "";
   display: block;
   height: 3px;
-  background-color: white;
-  width: 45px;
+  background-color: #D36E51;
+  width: 30px;
   position: relative;
-  bottom: 13px;
+  bottom: 10px;
+  border-radius: 2px;
 }
 
 .menu-bars:after {
   content: "";
   display: block;
   height: 3px;
-  background-color: white;
-  width: 45px;
+  background-color: #D36E51;
+  width: 30px;
   position: relative;
-  top: 9px;
+  top: 7px;
+  border-radius: 2px;
+}
+
+.menu-button:hover {
+  opacity: .8;
 }
 
 .menu {
-  position: relative;
+  position: fixed;
+  display: inline-block;
   z-index: 3;
-  bottom: 1px;
-  margin-left: 3px;
-  width: 100px;
+  width: 60px;
+  height: 100vh;
+  background-color: #222;
+  transition: width 350ms;
 }
 
-.menu button {
-  width: 100px;
-  padding: 10px 20px;
-  text-align: left;
-  font-size: 14px;
-  display: block;
-  background-color: #444;
-  color: white;
-  border-top: 1px solid rgba(255,255,255,.6);
+.menu-longer {
+  width: 400px;
 }
 
-.menu button:hover:enabled {
-  background-color: #6F6F6F;
-  opacity: 1;
-}
-
-.menu button:disabled {
-  color: rgba(255,255,255,.5);
-  background-color: #4F4F4F;
+.exit-menu {
+  color: rgba(255,255,255,.8);
+  position: absolute;
+  margin: 10px;
+  right: 0px;
 }
 
 /*register div*/
@@ -328,7 +334,10 @@ input:focus, button:focus {
   position: fixed;
   text-align: center;
   width: 100%;
-  font-size: 40px;
+  font-size: 18px;
+  font-style: italic;
+  margin-top: 3px;
+  color: black;
 }
 
 /*initial css styling*/
@@ -390,6 +399,10 @@ input:focus, button:focus {
   width: 380px;
   margin: 50px 10px 10px 10px;
   overflow: hidden;
+}
+
+.lists {
+  margin-left: 60px;
 }
 
 /*edit list div*/
@@ -589,7 +602,7 @@ input:focus, button:focus {
 }
 
 .list-contents {
-  height: 73vh;
+  height: 76vh;
   overflow: scroll;
   transform: translateY(20px);
 }

@@ -143,7 +143,7 @@ class List extends Component {
     return(
       <div className="list" style={{backgroundColor: this.props.data.color, color: this.props.data.color}}>
         <div className="list-title-div">
-          <input autocomplete="off" type="text" className="list-title" name="title" defaultValue={this.props.data.title} onChange={(event) => {this.props.editList(this.props.data, event.target.value)}} />
+          <input onFocus={(event) => event.target.select()} autocomplete="off" type="text" className="list-title" name="title" defaultValue={this.props.data.title} onChange={(event) => {this.props.editList(this.props.data, event.target.value)}} />
           <button className="edit-list" onClick={this.toggleEditListDiv}><FontAwesomeIcon icon="cog"/></button>
           <ReactCSSTransitionGroup
             transitionName="fade"
