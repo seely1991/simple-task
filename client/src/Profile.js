@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
+//make a delete list button
+
 class Profile extends Component {
   constructor(props) {
     super(props);

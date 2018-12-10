@@ -116,7 +116,7 @@ class Home extends Component {
     }
   }
   render() {
-    let title = <h1 className="home-title">Simple<br/>Task</h1>;
+    let title;
     let homeButtonFn = this.toggleSignIn;
     let inputs;
     let loginButton = <button className="login-button" onClick={this.toggleSignIn} type="button"><div>Login</div></button>;
@@ -130,7 +130,8 @@ class Home extends Component {
           progress tool that will help you <br/>
           organize a project from beginning to end
         </p>
-      )
+      );
+      title = <h1 className="home-title">Simple<br/>Task</h1>;
     }
     if (this.state.signIn || this.state.register) {
       description = null;
@@ -148,7 +149,6 @@ class Home extends Component {
     if (this.state.userData) {
       console.log({state: this.state})
       console.log('buidling profile')
-      title = null;
       blackDivAnm = "stretch-right-less";
       loginButton = null;
       profile = <Profile userData={this.state.userData} token={this.state.token} />
