@@ -132,7 +132,7 @@ class List extends Component {
               </ReactCSSTransitionGroup>
             </div>
             <div className="add-list-item-button-div">
-              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={() => this.props.addListItem(this.props.data)}><FontAwesomeIcon icon="plus-circle" /></button>
+              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={() => this.props.addListItem(this.props.data)}><div className="plus-circle" /></button>
             </div>
           </div>
       )

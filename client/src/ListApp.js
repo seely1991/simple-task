@@ -99,7 +99,7 @@ class ListApp extends Component {
   }
   saveToServer() {
     clearTimeout(this.saving);
-    this.saving = setTimeout(this.updateProject, 2000);
+    this.saving = setTimeout(this.updateProject, 1500);
   }
   onChange(event) {
     this.saveToServer();

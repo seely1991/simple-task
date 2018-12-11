@@ -84,8 +84,8 @@ app.get('/signIn', (req, res, next) => {
 	})
 	user.findOne({name: req.query.name}, (err, data) => {
 		console.log(data);
-		if (err) return res.status(500).send("there was a problem finding the user");
-		if (!data) return res.status(404).send("no user found");
+		if (err) return res.status(500).json({message: "there was a problem finding the user"});
+		if (!data) return res.status(404).json({message: "no user found"});
 		var isPassword = bcrypt.compareSync(req.query.password, data.password);
 		console.log({isPassword: isPassword});
 		var token = jwt.sign({ id: data._id }, process.env.SECRET, {
@@ -97,8 +97,12 @@ app.get('/signIn', (req, res, next) => {
 			projects: data.projects,
 			profileColor: data.profileColor
 		}
+		if (isPassword) {
+			res.status(200).json({ auth: true, token: token, userData: userData });
+		}else{
+			res.status(404).json({message: "password did not match username"});
+		}
 		//check that {password: 0} makes it not show up
-		res.status(200).json({ auth: true, token: token, userData: userData });
 	})
 })
 

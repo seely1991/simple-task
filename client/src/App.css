@@ -28,6 +28,37 @@ button {
   font-size: 24px;
 }
 
+.plus-circle {
+  margin-top: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,.8);
+  background-color: none;
+  display: inline-block;
+  transition: transform 200ms;
+}
+
+.plus-circle:before, .plus-circle:after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 2px;
+  position: relative;
+  top: 20px;
+  margin-left: 5px;
+  background-color: rgba(255,255,255,.8);
+}
+
+.plus-circle:after {
+  transform: rotate(90deg);
+  top: 18px;
+}
+
+button:active .plus-circle {
+  transform: scale(.90);
+}
+
 button:hover {
   opacity: .8;
 }
@@ -115,6 +146,18 @@ input:focus, button:focus {
 
 .login-button:active {
   transform: scale(.97);
+  background-color: red;
+}
+
+.sign-in-button {
+  padding: 0px;
+  padding-left: 10px;
+  font-size: 38px;
+  color: white;
+  background-color: red;
+}
+
+.sign-in-button:hover {
   background-color: red;
 }
 
@@ -218,12 +261,11 @@ input:focus, button:focus {
   position: absolute;
   height: 50px;
   margin-left: 3px;
-  width: 100px;
   text-align: left;
   font-size: 14px;
   display: block;
   color: white;
-  right: -46px;
+  right: 10px;
 }
 
 .menu-button:hover {
@@ -756,11 +798,9 @@ input:focus, button:focus {
 }
 
 .move-it-div {
-  position: absolute;
-  max-width: 60px;
-  transform: translate(310px,-50px);
+  width: 360px;
   z-index: 1;
-  background-color: #444;
+  margin-left: 20px;
 }
 
 .list-names {
@@ -768,16 +808,22 @@ input:focus, button:focus {
   text-align: left;
   font-size: 14px;
   color: white;
-  border-top: 1px solid rgba(255,255,255,.6);
   width: 60px;
-  white-space: normal;
+  margin-top: 15px;
 }
 
 .list-names:hover, .exit-move-it-div:hover {
-  background-color: rgba(0,0,0,.5);
+  opacity: .8;
 }
 
 .exit-move-it-div {
+  position: absolute;
+  color: white;
+  right: 25px;
+  margin-top: 5px;
+}
+
+.move-it-to {
   display: inline-block;
   font-size: 14px;
   color: white;
@@ -907,4 +953,26 @@ input:focus, button:focus {
   max-height: 0px;
   padding: 0px;
   transition: left 300ms, max-height 300ms ease 100ms,  padding 300ms ease 100ms;
+}
+
+.stretch-down-enter {
+  max-height: 0px;
+  opacity: 0;
+}
+
+.stretch-down-enter.stretch-down-enter-active {
+  max-height: 200px;
+  opacity: 1;
+  transition: max-height 400ms, opacity 200ms;
+}
+
+.stretch-down-leave {
+  max-height: 200px;
+  opacity: 1;
+}
+
+.stretch-down-leave.stretch-down-leave-active {
+  max-height: 0px;
+  opacity: 0;
+  transition: max-height 400ms, opacity 200ms;
 }

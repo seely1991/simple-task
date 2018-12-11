@@ -51,10 +51,11 @@ class ListItem extends Component {
         listProps: this.props,
       })
       let filteredLists = this.props.lists.filter(x => x !== this.props.list)
-      let listNames = filteredLists.map(x => <button className="list-names" onClick={() => {this.props.assignToList(this.props.list, x, this.props.item); this.toggleMoveItDiv()}}>{x.title}</button>)
+      let listNames = filteredLists.map(x => <button className="list-names" onClick={() => {this.toggleMoveItDiv(); this.props.assignToList(this.props.list, x, this.props.item);}}>{x.title}</button>)
       moveItDiv = (
         <div className="move-it-div">
-          <button className="exit-move-it-div" onClick={this.toggleMoveItDiv}>move it</button>
+          <button className="exit-move-it-div" onClick={this.toggleMoveItDiv}><FontAwesomeIcon icon="times" /></button>
+          <button className="move-it-to" onClick={this.toggleMoveItDiv}>move it to:</button>
           {listNames}
         </div>
       )
@@ -70,7 +71,7 @@ class ListItem extends Component {
           </div>
         </div>
         <ReactCSSTransitionGroup
-            transitionName="fade"
+            transitionName="stretch-down"
             transitionEnterTimeout={300}
             transitionLeaveTimeout={300}>
           {moveItDiv}

@@ -90,6 +90,10 @@ class Home extends Component {
     .then(res => res.json())
     .then(res => {
       console.log(res);
+      if (res.message) {
+        console.log(res.message);
+        return
+      }
       window.localStorage.setItem('token', res.token)
       this.setState({token: res.token, userData: res.userData})
       console.log(this.state)
@@ -98,6 +102,10 @@ class Home extends Component {
   componentDidMount() {
     const token = window.localStorage.getItem('token');
     if (token) {
+      console.log({
+        token: token,
+        message: "trying to login a token"
+      })
       fetch('/me', {
         headers: {
           "x-access-token": token
@@ -123,7 +131,9 @@ class Home extends Component {
     let goToRegister;
     let blackDivAnm = "stretch-right";
     let description;
-    if (!window.localStorage.getItem('token')) {
+    let profile;
+    let localToken = window.localStorage.getItem('token');
+    if (!localToken) {
       description = (
         <p className="home-description">
           A simple list making, item creating, 
@@ -137,14 +147,13 @@ class Home extends Component {
       description = null;
       blackDivAnm = "stretch-left";
     }
-    let profile;
     if (this.state.signIn && !this.state.userData) {
       inputs = <SignIn toggleRegister={this.toggleRegister} onChange={this.onChange} toggleSignIn={this.toggleSignIn}/>;
-      loginButton = <button className="login-button" onClick={this.loginSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
+      loginButton = <button className="login-button sign-in-button" onClick={this.loginSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
       goToRegister = <button className="go-to-register" type="button" onClick={this.toggleRegister}>register an account</button>
     }else if (this.state.register && !this.state.userData) {
       inputs = <SignIn register={true} onChange={this.onChange} toggleRegister={this.toggleRegister} />;
-      loginButton = <button className="login-button" onClick={this.registerSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
+      loginButton = <button className="login-button sign-in-button" onClick={this.registerSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
     }
     if (this.state.userData) {
       console.log({state: this.state})
