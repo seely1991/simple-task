@@ -16,7 +16,7 @@ class Profile extends Component {
     window.location = "/";
   }
   newProject() {
-    let token = this.state.token;
+    let token = this.props.token;
     let body = {
 
     }
