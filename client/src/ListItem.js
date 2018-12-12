@@ -23,13 +23,17 @@ class ListItem extends Component {
     this.toggleShowNotes=this.toggleShowNotes.bind(this);
   }
   toggleEditListItemDiv() {
-    this.setState({editListItemDiv: !this.state.editListItemDiv});
+    if (!this.state.moveItDiv) {
+      this.setState({editListItemDiv: !this.state.editListItemDiv});
+    }
   }
   onChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }
   toggleMoveItDiv(){
-    this.setState({moveItDiv: !this.state.moveItDiv})
+    if (!this.state.editListItemDiv) {
+      this.setState({moveItDiv: !this.state.moveItDiv})
+    }
   }
   toggleShowNotes() {
     console.log("showing notes")

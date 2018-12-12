@@ -100,9 +100,6 @@ class List extends Component {
     console.log({changed: this.state})
   }
   toggleMoveItDiv(item) {
-    if (!this.state.moveItDiv) {
-      this.setState({currentListItem: item})
-    }
     this.setState({moveItDiv: !this.state.moveItDiv});
   }
   render() {

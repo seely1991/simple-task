@@ -132,6 +132,7 @@ class ListApp extends Component {
     this.saveToServer();
   }
   oldAddListItem(item, note, list) {
+    if (!item) {return}
     const listArr = this.state.lists;
     const index = listArr.findIndex(x => JSON.stringify(x) === JSON.stringify(list));
     listArr[index].items.push({
@@ -143,11 +144,14 @@ class ListApp extends Component {
     this.saveToServer();
   }
   deleteList(list) {
-    const listArr = this.state.lists;
-    const index = listArr.indexOf(list);
-    listArr.splice(index, 1);
-    this.setState({lists: listArr});
-    this.saveToServer();
+    const confirmed = window.confirm("You are about to delete this list with all of it's contents permanently. Are you sure you want to continue?")
+    if (confirmed) {
+      const listArr = this.state.lists;
+      const index = listArr.indexOf(list);
+      listArr.splice(index, 1);
+      this.setState({lists: listArr});
+      this.saveToServer();
+    }
   }
   deleteListItem(list, item) {
     console.log('did something')
@@ -179,6 +183,7 @@ class ListApp extends Component {
     this.saveToServer();
   }
   editListItem(list, name, note, id) {
+    if (!name) {return}
     console.log({
       list: list,
       name: name,

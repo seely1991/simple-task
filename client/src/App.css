@@ -21,6 +21,10 @@ header {
   z-index: 5;
 }
 
+a {
+  text-decoration: none;
+}
+
 button {
   text-decoration: none;
   border: none;
@@ -231,14 +235,43 @@ input:focus, button:focus {
 .project-list {
   position: absolute;
   width: 40vw;
+  max-width: 400px;
   white-space: normal;
 }
 
 .project-name, .project-date, .project-name-col, .project-date-col {
   color: white;
   display: inline-block;
-  width: 16vw;
   margin: 5px 5% 5px 5%;
+  min-width: 15vw;
+}
+
+.project-date {
+  margin-right: 0px;
+}
+
+.project-link:hover .delete-project {
+  visibility: visible;
+}
+
+.project-link {
+  display: flex;
+  flex-direction: row;
+}
+
+.delete-project {
+  visibility: hidden;
+  position: absolute;
+  right: 10px;
+  display: inline-block;
+  color: rgba(255,255,255,.7);
+  padding-top: 3px;
+  font-size: 17px;
+}
+
+.delete-project:hover {
+  background: rgba(255,255,255,.3);
+  border-radius: 3px;
 }
 
 .project-name-col, .project-date-col {
@@ -433,7 +466,9 @@ input:focus, button:focus {
 
 .list-title-div {
   margin-bottom: 0px;
-
+  height: 0px;
+  overflow: hidden;
+  animation: stretch-down 300ms ease 600ms 1 forwards;
 }
 
 .edit-list {
@@ -879,6 +914,11 @@ input:focus, button:focus {
   }
 }
 
+@keyframes stretch-down {
+  0% {height: 0px;}
+  100% {height: 106px;}
+}
+
 .fade-appear {
   opacity: 0.01;
 }
@@ -906,9 +946,13 @@ input:focus, button:focus {
   transition: opacity 300ms;
 }
 
+
+
+
+
 .new-list-enter {
   width: 1px;
-  height: 2px;
+  height: 10px;
 }
 
 .new-list-enter.new-list-enter-active {
@@ -931,6 +975,10 @@ input:focus, button:focus {
   margin-right: 0px;
   transition: height 300ms ease-in-out, width 400ms ease-out 300ms, margin-top 250ms ease-in-out, margin-left 250ms ease 350ms, margin-right 250ms ease 350ms;
 }
+
+
+
+
 
 .new-list-item-enter {
   right: 400px;

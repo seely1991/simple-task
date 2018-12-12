@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
+library.add(faMinusCircle)
 //make a delete list button
 
 class Profile extends Component {
@@ -13,6 +14,8 @@ class Profile extends Component {
     this.state = {
       userData: this.props.userData
     };
+    this.newProject=this.newProject.bind(this);
+    this.deleteProject=this.deleteProject.bind(this);
   }
   logout() {
     window.localStorage.removeItem('token');
@@ -38,7 +41,7 @@ class Profile extends Component {
     })
     
   }
-  componentDidMount() {
+  componentDidMount() { 
     fetch('/me', {
       headers: {
         'x-access-token': this.props.token
@@ -52,12 +55,30 @@ class Profile extends Component {
       }
     })
   }
+  deleteProject(projectId) {
+    console.log({id: projectId})
+    const confirmed = window.confirm("You are about to delete this project permanently. \nDo you wish to continue?");
+    if (confirmed) {
+      fetch('/delete-project', {
+        method: 'PUT',
+        headers: {
+          'x-access-token': this.props.token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: projectId})
+      })
+      .then(res => res.json())
+      .then(res => this.setState({userData: res.userData}))
+    }
+  }
   render() {
     let projects = this.state.userData.projects.map(x => (
-        <a className="project-link" href={'/project/' + encodeURIComponent(this.props.token) + '/' + encodeURIComponent(x._id)}>
-          <p className="project-name">{x.title}</p>
-          <p className="project-date">{(new Date(x.updated)).toLocaleDateString().replace(/\//g,'.')}</p>
-        </a>
+        <div className="project-link">
+          <a className="project-name" href={'/project/' + encodeURIComponent(this.props.token) + '/' + encodeURIComponent(x._id)}>{x.title}</a>
+          <a className="project-date" href={'/project/' + encodeURIComponent(this.props.token) + '/' + encodeURIComponent(x._id)}>{(new Date(x.updated)).toLocaleDateString().replace(/\//g,'.')}</a>
+          <button className="delete-project" onClick={() => this.deleteProject(x._id)}><FontAwesomeIcon icon="trash" /></button>
+        </div>
       ));
     if (this)
     return (
@@ -69,7 +90,9 @@ class Profile extends Component {
         </div>
         <p className="your-projects">Your projects</p>
         <div className="project-list">
-          <p className="project-name-col">Name</p><p className="project-date-col">last Updated</p>
+          <div className="project-link">
+            <p className="project-name-col">Name</p><p className="project-date-col">last Updated</p>
+          </div>
           {projects}
           <button className="new-project" onClick={this.newProject}><div className="plus-circle" /><p>New Project</p></button>
         </div>

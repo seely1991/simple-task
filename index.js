@@ -154,11 +154,11 @@ app.put('/create-new', (req, res) => {
 	var token = req.headers['x-access-token'];
 	jwt.verify(token, process.env.SECRET, (err, decoded) => {
 		if (err) {
-			return res.status(500).send({ auth: false, message: 'failed to authenticate token'}) 
+			return res.status(500).json({ auth: false, message: 'failed to authenticate token'}) 
 		}
 		user.findById(decoded.id, { password: 0 }, (err, data) => {
-			if (err) return res.status(500).send("there was a problem finding the user");
-			if (!data) return res.status(404).send('no user found');
+			if (err) return res.status(500).json({message: "there was a problem finding the user"});
+			if (!data) return res.status(404).json({message: 'no user found'});
 			let updated = new Date(Date.now());
 			updated = updated.toISOString();
 			newProject = new project({
@@ -172,6 +172,33 @@ app.put('/create-new', (req, res) => {
 				console.log(data)
 				res.status(200).json({ auth: true, token: token, userData: data, listId: newProject._id })
 			});
+		})
+	})
+})
+
+app.put('/delete-project', (req, res) => {
+	var token = req.headers['x-access-token'];
+	jwt.verify(token, process.env.SECRET, (err, decoded) => {
+		if (err) {
+			return res.status(500).json({ auth: false, message: 'failed to authenticate token'})
+		}
+		user.findById(decoded.id, { password: 0 }, (err, data) => {
+			if (err) return res.status(500).json({message: "there was a problem finding the user"});
+			if (!data) return res.status(404).json({message: 'no user found'});
+			const projects = data.projects;
+			const index = projects.findIndex(x => x._id.toString() === req.body.id);
+			projects.splice(index, 1);
+			data.projects = projects;
+			data.markModified("projects");
+			data.save((err, data) => {
+				console.log({
+					saveData: data.projects[index],
+					projects: projects[index],
+					index: index
+				})
+				res.status(200).json({userData: data})
+			})
+			console.log("deleted project at the " + index + " place")
 		})
 	})
 })
