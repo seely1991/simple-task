@@ -28,35 +28,48 @@ button {
   font-size: 24px;
 }
 
-.plus-circle {
+.plus-circle, .plus-circle-background {
   margin-top: 10px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: 3px solid rgba(255,255,255,.8);
   background-color: none;
+  border-color: inherit;
   display: inline-block;
-  transition: transform 200ms;
+  transition: transform 200ms, border-color 200ms
 }
 
 .plus-circle:before, .plus-circle:after {
   content: "";
   display: block;
-  width: 30px;
-  height: 2px;
+  width: 28px;
   position: relative;
-  top: 20px;
+  top: 19px;
   margin-left: 5px;
-  background-color: rgba(255,255,255,.8);
+  border-style: solid;
+  border-width: 1px;
+  border-color: inherit;
 }
 
 .plus-circle:after {
   transform: rotate(90deg);
-  top: 18px;
+  top: 17px;
 }
 
-button:active .plus-circle {
+.plus-circle-background {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+button:active .plus-circle-background {
+  opacity: 1;
+}
+
+button:active .plus-circle, button:active .plus-circle-background {
   transform: scale(.90);
+  border-color: white;
 }
 
 button:hover {
@@ -412,7 +425,7 @@ input:focus, button:focus {
   background-color: rgba(255, 255, 255, .5);
   padding: 20px 0px 8px 10px;
   margin: 5px 7px 0px 7px;
-  width: 93%;
+  width: 358px;
   font-size: 40px;
   resize: none;
   color: inherit;
@@ -425,7 +438,7 @@ input:focus, button:focus {
 
 .edit-list {
   position: relative;
-  transform: translate(-55px, -10px);
+  transform: translate(330px, -50px);
   color: inherit;
   z-index: 1;
 }
@@ -455,20 +468,10 @@ input:focus, button:focus {
   position: relative;
   bottom: 1px;
   margin: 0px 4px;
-  padding-bottom: 10px;
-  box-shadow: 10px 30px 30px 0px rgba(0,0,0,.4);
+  padding-bottom: 30px;
 }
 
-.edit-list-white:before {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 380px;
-  left: -4px;
-  top: -2px;
-  height: 340px;
-  background-color: rgba(255, 255, 255, .3);
-}
+
 
 .edit-list-div {
   height: 340px;
@@ -506,7 +509,6 @@ input:focus, button:focus {
 .edit-list-input {
   border: none;
   position: relative;
-  border-bottom: 2px solid #ddd;
   width: 90%;
   font-size: 33px;
   margin-top: 15px;
@@ -518,24 +520,30 @@ input:focus, button:focus {
   font-size: 14px;
 }
 
-.delete-list {
+.bottom-edit-list-div {
+  background-color: white;
+  width: 372px;
+  margin-top: 1px;
+  margin-left: 4px;
+}
+
+.delete-list, .item-delete {
   position: relative;
   border-radius: 25px;
-  background-color: white;
+  background-color: #EB683D;
   font-size: 18px;
   padding: 9px;
   width: 250px;
   z-index: 1;
-  top: 70px;
   left: 60px;
   color: white;
-
+  margin-top: 60px;
+  margin-bottom: 30px;
 }
 
 .theme-buttons {
   position: relative;
   top: 30px;
-  border-bottom: 1px solid white;
   margin: 0 3px;
   padding-left: 7px;
   overflow: hidden;
@@ -544,97 +552,38 @@ input:focus, button:focus {
 
 .list-theme-header {
   margin: 0px 0px 5px 10px;
-  color: white;
+  color: inherit;
   text-align: left;
 }
 
-.outer-theme-circle, .inner-theme-circle, .theme-circle-darker {
-  border-radius: 50%;
-  padding: 0px;
-}
+
 
 .theme-button-div {
   display: inline-block;
   position: relative;
-  bottom: 80px;
+  padding-top: 20px;
 }
 
-.theme-button-circle, .theme-button-circle:before {
-  margin: 15px 13px 15px 15px;
-  display: inline-block;
+.theme-button-div button {
+  transition: transform 200ms, border-width 200ms;
+}
+
+.theme-button-circle {
+  vertical-align: top;
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 0px;
 }
 
-.theme-button-circle:before {
-  /*dark colored*/
-  content: "";
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  background-color: rgba(0,0,0,.2);
-}
-
-.theme-button-circle:after {
-  /*center circle*/
-  content: "";
-  position: absolute;
-  display: inline-block;
-  background-color: inherit;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  bottom: 22px;
-  right: 20px;
-}
-
-.selected-theme {
-  width: 50px;
-  position: relative;
-  height: 0px;
-  width: 0px;
-  top: 80px;
-  left: 4px;
-  border-radius: 25px 25px 0 0;
-  border: 25px solid white;
-  border-bottom: 50px solid white;
-  z-index: -1;
-  background-color: white;
-  animation: select-theme-anm 200ms;
-}
-
-.selected-theme:after {
-  content: "";
-  display: block;
-  width: 70px;
-  position: relative;
-  bottom: 18px;
-  right: 36px;
-  height: 10px;
-  background-color: white;
-}
-
-.selected-theme-flare-circles:after, .selected-theme-flare-circles:before {
-  content: "";
-  display: block;
-  position: relative;
-  height: 20px;
-  width: 20px;
-  z-index: 1;
-  background-color: inherit;
-}
-
-.selected-theme-flare-circles:after {
-  right: 45px;
-  border-radius: 50%;
-  bottom: 8px;
-}
-
-.selected-theme-flare-circles:before {
-  left: 25px;
-  border-radius: 50%;
-  top: 12px;
+.theme-button-circle-selected {
+  border-width: 7px;
+  border-style: solid;
+  width: 30px;
+  height: 30px;
+  transform: scale(1.3);
 }
 
 /*list item stuff*/
@@ -668,7 +617,7 @@ input:focus, button:focus {
   margin-bottom: 30px;
 }
 
-.item-note {
+.new-item-note {
   border: none;
   display: inline-block;
   color: rgba(255,255,255,.5);
@@ -682,27 +631,51 @@ input:focus, button:focus {
   overflow: auto;
 }
 
+.item-note {
+  display: block;
+  color: white;
+  padding: 10px 0px 5px 5px;
+}
+
+.item-note-text-area {
+  width: 340px;
+  resize: none;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 16px;
+  outline: none;
+  border-top: 1px dotted rgba(0,0,0,.3);
+}
+
 .item-div {
-  display: flex;
   position: relative;
   margin-right: 0px;
   justify-content: flex-end;
   background-color: rgba(50,50,50,.2);
   padding: 10px;
-  width: 340px;
+  width: 360px;
+}
+
+.item-div:hover .item-edit-buttons .item-edit {
+  visibility: visible;
 }
 
 .item-name {
   padding-left: 5px;
   vertical-align: top;
   margin-right: 7px;
-  min-width: 70px;
-  margin-right: auto;
+  width: 260px;
+  color: white;
+  display: inline-block;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: default;
 }
 
 .add-list-item-div {
-  position: absolute;
-  transform: translateY(-25px);
+  
 }
 
 .item-edit-buttons button, .item-delete, .save-item-edit, .edit-item-exit {
@@ -711,37 +684,84 @@ input:focus, button:focus {
 }
 
 .item-edit-buttons {
+  width: 50px;
+  display: inline-block;
 }
 .item-edit {
+  visibility: hidden;
 }
 
 .move-it-button {
   width: 60px;
 }
 
-.add-item-name-input, .add-item-notes-input, .edit-list-item-div input {
-  background: rgba(255, 255, 255, .5);
+.add-list-item-name, .add-item-notes {
+  background-color: white;
+  width: 370px;
+  margin-left: 5px;
+  margin-bottom: 2px;
+  padding-top: 1px;
+}
+
+.add-item-notes {
+  padding-top: 10px;
+}
+
+.add-item-label {
+  font-size: 14px;
+  margin-left: 15px;
+}
+
+.add-item-name-input, .add-item-notes-input {
+  background: white;
+  display: block;
   text-decoration: none;
   border: none;
+  color: inherit;
   font-size: 14px;
-  padding: 2px 0px 0px 2px;
-  margin: 10px;
+  padding: 2px 5px 0px 2px;
+  width: 95%;
 }
 
 .add-item-name-input {
-  width: 120px;
-  margin-right: 0px;
+  padding-bottom: 5px;
+}
+
+.add-item-notes {
 }
 
 .add-item-notes-input {
-  width: 140px;
+  margin-left: 5px;
+  resize: none;
+  outline: none;
+  padding: 5px;
+  min-height: 100px;
+}
+
+.add-item-exit {
+  font-size: 25px;
+  margin-left: 5px;
+  color: inherit;
+  transform: translateY(-5px);
+  z-index: 3;
+}
+
+.new-item-header {
+  text-align: center;
+  transform: translateY(-15px);
+}
+
+.add-item-save {
+  font-size: 14px;
+  color: blue;
+  right: 7px;
+  transform: translateY(-62px);
 }
 
 .add-item-exit, .add-item-save {
-  font-size: 15px;
   vertical-align: top;
-  margin-top: 10px;
-  color: rgba(255,255,255,.7);
+  position: absolute;
+  margin-top: 5px;
   text-shadow: 0px 0px inherit;
 }
 
@@ -749,29 +769,12 @@ input:focus, button:focus {
   background-color: rgba(255,255,255,.5);
 }
 
-.add-item-exit {
-  padding-left: 3px;
-  margin-left: 7px;
-  padding-right: 2px;
-  transform: translate(5px, 7px);
-}
-
 .add-list-item-div input {
   padding: 10px 0px 5px 5px;
 }
 
 .edit-list-item-div {
-  position: absolute;
-  height: 30px;
-  transform: translate(-5px, -45px);
-
-}
-
-.edit-list-item-div input {
-  height: 28px;
-  position: relative;
-  bottom: 11px;
-
+  margin-top: 5px;
 }
 
 .edit-item-name-input {
@@ -782,11 +785,11 @@ input:focus, button:focus {
   transform: translate(10px, -10px);
 }
 
-.save-item-edit, .item-delete {
- 
+.item-delete {
+ margin-top: 0px;
 }
 
-.save-item-edit:hover, .item-delete:hover {
+.save-item-edit:hover {
   background: rgba(255,255,255,.2);
 }
 
@@ -955,24 +958,27 @@ input:focus, button:focus {
   transition: left 300ms, max-height 300ms ease 100ms,  padding 300ms ease 100ms;
 }
 
+
+
+
 .stretch-down-enter {
   max-height: 0px;
   opacity: 0;
 }
 
 .stretch-down-enter.stretch-down-enter-active {
-  max-height: 200px;
+  max-height: 400px;
   opacity: 1;
-  transition: max-height 400ms, opacity 200ms;
+  transition: max-height 500ms, opacity 200ms;
 }
 
 .stretch-down-leave {
-  max-height: 200px;
+  max-height: 400px;
   opacity: 1;
 }
 
 .stretch-down-leave.stretch-down-leave-active {
   max-height: 0px;
   opacity: 0;
-  transition: max-height 400ms, opacity 200ms;
+  transition: max-height 500ms, opacity 200ms;
 }

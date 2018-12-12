@@ -3,7 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog } from '@fortawesome/free-solid-svg-icons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import ListItem from './NewListItem.js';
+import ListItem from './ListItem.js';
 import Textarea from 'react-textarea-autosize';
 
 library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog);
@@ -14,17 +14,44 @@ class ThemeButtons extends Component {
     this.state = {};
   }
   render() {
-    const colors = ['#EB6738', '#8A83E1', '#DF89FD', '#F2D197', '#949494', '#F0A3BA'];
+    const colors = [
+      {
+        background: '#EB6738',
+        border: '#E46524'
+      },
+      {
+        background: '#8A83E0',
+        border: '#625D86'
+      },
+      {
+        background: '#DF89FA',
+        border: ''
+      },
+      {
+        background: '#F3C734',
+        border: ''
+      },
+      {
+        background: '#F09D46',
+        border: '#E46524'
+      },
+      {
+        background: '#959595',
+        border: ''
+      },
+    ]
     const themeButtons = colors.map(x => {
-      let selected;
-      if (this.props.list.color === x) {
-        selected = <div className="selected-theme"><div className="selected-theme-flare-circles" style={{backgroundColor: this.props.list.color}}><div className="hide-flare-circles"></div></div></div>
+      let button = <button className="theme-button-circle" onClick={() => this.props.changeTheme(this.props.list, x.background)} style={{backgroundColor: x.background}} />;
+      if (this.props.list.color === x.background) {
+        let borderColor = "rgba(0,0,0,.3)";
+        if (x.border) {
+          borderColor = x.border;
+        }
+        button = <button className="theme-button-circle theme-button-circle-selected" style={{borderColor: borderColor, backgroundColor: x.background}} onClick={() => this.props.changeTheme(this.props.list, x.background)} />
       }
       return(
       <div className="theme-button-div">
-        {selected}
-        <button className="theme-button-circle" onClick={() => this.props.changeTheme(this.props.list, x)} style={{backgroundColor: x}}>
-        </button>
+        {button}
       </div>
         )}) 
     return(
@@ -42,7 +69,8 @@ class List extends Component {
     this.state = {
       editListDiv: false,
       moveItDiv: false,
-      currentListItem: ''
+      currentListItem: '',
+      title: this.props.data.title
     };
     this.toggleEditListDiv=this.toggleEditListDiv.bind(this);
     this.toggleAddListItemDiv=this.toggleAddListItemDiv.bind(this);
@@ -69,6 +97,7 @@ class List extends Component {
   }
   onChange(event) {
     this.setState({[event.target.name]: event.target.value})
+    console.log({changed: this.state})
   }
   toggleMoveItDiv(item) {
     if (!this.state.moveItDiv) {
@@ -95,10 +124,17 @@ class List extends Component {
     if (this.state.addListItemDiv) {
       addListItemDiv = (
         <div className="add-list-item-div">
-          <button className="add-item-exit" onClick={this.hideAddListItemDiv}><FontAwesomeIcon icon="chevron-left" /></button>
-          <input className="add-item-name-input" type="text" name="item" placeholder="item" onChange={this.onChange}/>
-          <input className="add-item-notes-input" type="text" name="notes" placeholder="notes" onChange={this.onChange}/>
-          <button className="add-item-save" onClick={() => {this.props.addListItem(this.state.item, this.state.notes, this.props.data); this.toggleAddListItemDiv()}}>save</button>
+          <div className="add-list-item-name">
+            <button className="add-item-exit" onClick={this.toggleAddListItemDiv}><FontAwesomeIcon icon="times" /></button>
+            <h4 className="new-item-header">New Item</h4>
+            <button className="add-item-save" onClick={() => {this.props.addListItem(this.state.item, this.state.notes, this.props.data); this.toggleAddListItemDiv()}}>SAVE</button>
+            <label className="add-item-label" for="item">Enter item name</label>
+            <input className="add-item-name-input" type="text" name="item" onChange={this.onChange}/>
+          </div>
+          <div className="add-item-notes">
+            <label className="add-item-label" for="notes">Notes</label>
+            <Textarea className="add-item-notes-input" name="notes" onChange={this.onChange}/>
+          </div>
         </div>
       )
     }
@@ -110,11 +146,13 @@ class List extends Component {
           <div className="edit-list-white">
             <button className="exit-edit" style={{color: this.props.data.color}} onClick={this.toggleEditListDiv}><FontAwesomeIcon icon="chevron-left" /></button>
             <h3 className="edit-list-header" style={{color: this.props.data.color}}>Edit List</h3>
-            <input className="edit-list-input"  style={{color: this.props.data.color}} type="text" name="title" placeholder="List Header" onChange={this.onChange} />
+            <input className="edit-list-input"  style={{color: this.props.data.color}} type="text" name="title" placeholder={this.state.title} onChange={this.onChange} />
             <button className="save-list-edit" style={{color: this.props.data.color}} onClick={() => {this.props.editList(this.props.data, this.state.title); this.toggleEditListDiv()}}>Save</button>
           </div>
-          <ThemeButtons list={this.props.data} changeTheme={this.props.changeTheme} />
-          <button style={{color: this.props.data.color}} className="delete-list" onClick={() => {this.props.deleteList(this.props.data); this.toggleEditListDiv()}}>Delete List</button>
+          <div className="bottom-edit-list-div">
+            <ThemeButtons list={this.props.data} changeTheme={this.props.changeTheme} />
+            <button className="delete-list" onClick={() => {this.props.deleteList(this.props.data); this.toggleEditListDiv()}}>Delete List</button>
+          </div>
         </div>
       )
     }
@@ -131,8 +169,14 @@ class List extends Component {
                 {items}
               </ReactCSSTransitionGroup>
             </div>
+            <ReactCSSTransitionGroup
+                transitionName="stretch-down"
+                transitionEnterTimeout={700}
+              transitionLeaveTimeout={700}>
+              {addListItemDiv}
+            </ReactCSSTransitionGroup>
             <div className="add-list-item-button-div">
-              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={() => this.props.addListItem(this.props.data)}><div className="plus-circle" /></button>
+              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={() => this.toggleAddListItemDiv()}><div className="plus-circle" /></button>
             </div>
           </div>
       )
@@ -143,7 +187,7 @@ class List extends Component {
     return(
       <div className="list" style={{backgroundColor: this.props.data.color, color: this.props.data.color}}>
         <div className="list-title-div">
-          <input onFocus={(event) => event.target.select()} autocomplete="off" type="text" className="list-title" name="title" defaultValue={this.props.data.title} onChange={(event) => {this.props.editList(this.props.data, event.target.value)}} />
+          <div className="list-title">{this.state.title}</div>
           <button className="edit-list" onClick={this.toggleEditListDiv}><FontAwesomeIcon icon="cog"/></button>
           <ReactCSSTransitionGroup
             transitionName="fade"
@@ -152,12 +196,6 @@ class List extends Component {
             {editListDiv}
           </ReactCSSTransitionGroup>
         </div>
-        <ReactCSSTransitionGroup
-          transitionName="fade"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}>
-          {addListItemDiv}
-        </ReactCSSTransitionGroup>
         <ReactCSSTransitionGroup
             transitionName="fade"
             transitionEnterTimeout={300}

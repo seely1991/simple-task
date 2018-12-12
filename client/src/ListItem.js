@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog, faTrash, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Textarea from 'react-textarea-autosize';
 
-library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog);
+library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faCog, faTrash, faPencilAlt);
 
 
 class ListItem extends Component {
@@ -12,11 +13,14 @@ class ListItem extends Component {
     super(props);
     this.state = {
       editListItemDiv: false,
-      moveItDiv: false
+      moveItDiv: false,
+      name: this.props.item.item,
+      note: this.props.item.note
     };
     this.toggleEditListItemDiv=this.toggleEditListItemDiv.bind(this);
     this.onChange=this.onChange.bind(this);
     this.toggleMoveItDiv=this.toggleMoveItDiv.bind(this);
+    this.toggleShowNotes=this.toggleShowNotes.bind(this);
   }
   toggleEditListItemDiv() {
     this.setState({editListItemDiv: !this.state.editListItemDiv});
@@ -27,15 +31,30 @@ class ListItem extends Component {
   toggleMoveItDiv(){
     this.setState({moveItDiv: !this.state.moveItDiv})
   }
+  toggleShowNotes() {
+    console.log("showing notes")
+    this.setState({showNotes: !this.state.showNotes})
+  }
   render() {
+    console.log({
+      props: this.props
+    })
     let editListItemDiv;
     if (this.state.editListItemDiv) {
       editListItemDiv = (
-        <div className="edit-list-item-div">
-          <input className="edit-item-name-input" type="text" name="newName" placeholder="item" onChange={this.onChange} />
-          <input className="edit-item-notes-input" type="text" name="newNotes" placeholder="notes" onChange={this.onChange} />
-          <button className="item-delete" onClick={() => {this.toggleEditListItemDiv(); this.props.deleteListItem()}}>Delete</button>
-          <button className="save-item-edit" type="button" onClick={() => {this.props.editListItem(this.props.list, this.props.item, this.state.newName, this.state.newNotes); this.toggleEditListItemDiv()}}>Save</button>
+        <div className="add-list-item-div edit-list-item-div">
+          <div className="add-list-item-name">
+            <button className="add-item-exit" onClick={this.toggleEditListItemDiv}><FontAwesomeIcon icon="times" /></button>
+            <h4 className="new-item-header">Edit Item</h4>
+            <button className="add-item-save" onClick={() => {this.props.editListItem(this.props.list, this.state.name, this.state.note, this.props.item.id); this.toggleEditListItemDiv()}}>SAVE</button>
+            <label className="add-item-label" for="item">Enter item name</label>
+            <input className="add-item-name-input" type="text" defaultValue={this.props.item.item} name="name" onChange={this.onChange}/>
+          </div>
+          <div className="add-item-notes">
+            <label className="add-item-label" for="notes">Notes</label>
+            <Textarea className="add-item-notes-input" defaultValue={this.props.item.note} name="note" onChange={this.onChange}/>
+            <button className="item-delete" onClick={() => {this.toggleEditListItemDiv(); setTimeout(this.props.deleteListItem, 50)}}>Delete</button>
+          </div>
         </div>
       )
     }
@@ -44,8 +63,12 @@ class ListItem extends Component {
       visible = 'hidden'
     }
     let notes;
-    if (this.props.item.notes) {
-      notes = <div style={{visibility: visible}}className="item-note">{this.props.item.notes}</div>
+    if (this.props.item.note && this.state.showNotes) {
+      notes = (
+        <div className="item-note">
+          <Textarea className="item-note-text-area" defaultValue={this.props.item.note} />
+        </div>
+      )
     }
 
     let moveItDiv;
@@ -54,10 +77,11 @@ class ListItem extends Component {
         listProps: this.props,
       })
       let filteredLists = this.props.lists.filter(x => x !== this.props.list)
-      let listNames = filteredLists.map(x => <button className="list-names" onClick={() => {this.props.assignToList(this.props.list, x, this.props.item); this.toggleMoveItDiv()}}>{x.title}</button>)
+      let listNames = filteredLists.map(x => <button className="list-names" onClick={() => {this.toggleMoveItDiv(); this.props.assignToList(this.props.list, x, this.props.item);}}>{x.title}</button>)
       moveItDiv = (
         <div className="move-it-div">
-          <button className="exit-move-it-div" onClick={this.toggleMoveItDiv}>move it</button>
+          <button className="exit-move-it-div" onClick={this.toggleMoveItDiv}><FontAwesomeIcon icon="times" /></button>
+          <button className="move-it-to" onClick={this.toggleMoveItDiv}>move it to:</button>
           {listNames}
         </div>
       )
@@ -67,22 +91,28 @@ class ListItem extends Component {
       <div className="list-item-move-it-div-container">
         <div className="list-item">
           <div className="item-div">
-            <div className="item-name" style={{visibility: visible}}>{this.props.item.item}</div>
-            {notes}
-            <div className="item-edit-buttons" style={{visibility: visible}}>
-              <button className="item-edit" onClick={this.toggleEditListItemDiv}><FontAwesomeIcon icon="cog" /></button>
+            <div className="item-name" onClick={this.toggleShowNotes} >{this.props.item.item}</div>
+            <div className="item-edit-buttons" >
+              <button className="item-edit" onClick={this.toggleEditListItemDiv}><FontAwesomeIcon icon="pencil-alt" /></button>
               <button className="move-it-button" disabled={this.props.lists.length < 2} onClick={this.toggleMoveItDiv}>move it</button>
             </div>
+            <ReactCSSTransitionGroup
+              transitionName="stretch-down"
+              transitionEnterTimeout={300}
+              transitionLeaveTimeout={300}>
+              {notes}
+            </ReactCSSTransitionGroup>
           </div>
           <ReactCSSTransitionGroup
-              transitionName="fade"
+              transitionName="stretch-down"
               transitionEnterTimeout={300}
               transitionLeaveTimeout={300}>
             {editListItemDiv}
           </ReactCSSTransitionGroup>
-        </div> 
+        </div>
+
         <ReactCSSTransitionGroup
-            transitionName="fade"
+            transitionName="stretch-down"
             transitionEnterTimeout={300}
             transitionLeaveTimeout={300}>
           {moveItDiv}

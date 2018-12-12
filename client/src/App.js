@@ -1,6 +1,4 @@
-//must not be allowed to add list-item without information
-//toggle buttons also toggle out of other divs
-
+//delete list prompt, delete project button
 
 import React, { Component } from 'react';
 import './App.css';

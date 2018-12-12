@@ -47,6 +47,7 @@ class ListApp extends Component {
     this.onChange=this.onChange.bind(this);
     this.addList=this.addList.bind(this);
     this.addListItem=this.addListItem.bind(this);
+    this.oldAddListItem=this.oldAddListItem.bind(this);
     this.deleteList=this.deleteList.bind(this);
     this.deleteListItem=this.deleteListItem.bind(this);
     this.editList=this.editList.bind(this);
@@ -130,6 +131,17 @@ class ListApp extends Component {
     this.setState({lists: listArr});
     this.saveToServer();
   }
+  oldAddListItem(item, note, list) {
+    const listArr = this.state.lists;
+    const index = listArr.findIndex(x => JSON.stringify(x) === JSON.stringify(list));
+    listArr[index].items.push({
+      item: item,
+      note: note,
+      id: this.getRandomKey("item")
+    })
+    this.setState({lists: listArr});
+    this.saveToServer();
+  }
   deleteList(list) {
     const listArr = this.state.lists;
     const index = listArr.indexOf(list);
@@ -157,19 +169,26 @@ class ListApp extends Component {
     list.title = title;
     listArr.splice(index, 1, list);
     this.setState({lists: listArr});
+    console.log({message: 'making list title', title: title, state: this.state.lists[index]});
     this.saveToServer();
   }
   assignToList(currentList, newList, item) {
     console.log(item);
-    this.addListItem(newList, item.value);
+    this.oldAddListItem(item.item, item.note, newList);
     this.deleteListItem(currentList, item);
     this.saveToServer();
   }
-  editListItem(list, value, id) {
+  editListItem(list, name, note, id) {
+    console.log({
+      list: list,
+      name: name,
+      note: note
+    })
     const listArr = this.state.lists;
     const listIndex = listArr.indexOf(list);
     const itemIndex = list.items.findIndex(x => x.id === id);
-    list.items[itemIndex].value = value;
+    list.items[itemIndex].item = name;
+    list.items[itemIndex].note = note;
     listArr[listIndex] = list;
     this.setState({lists: listArr});
     console.log({editedList: this.state});
@@ -228,7 +247,7 @@ class ListApp extends Component {
           <List lists={this.state.lists} 
           data={x}
           key={x.key} 
-          addListItem={this.addListItem} 
+          addListItem={this.oldAddListItem} 
           deleteList={this.deleteList} 
           deleteListItem={this.deleteListItem} 
           toggleEditListDiv={this.toggleEditListDiv} 
@@ -264,7 +283,7 @@ class ListApp extends Component {
               transitionLeaveTimeout={700}>
             {lists}
           </ReactCSSTransitionGroup>
-          <button key="add-list-button" style={{left: this.state.lists.length*400 + 60 + "px", color: this.state.color}} id="add-list" onClick={this.addList}><FontAwesomeIcon icon="plus-circle" /><p>Create New List</p></button>
+          <button key="add-list-button" style={{left: this.state.lists.length*400 + 60 + "px", color: this.state.color}} id="add-list" onClick={this.addList}><div style={{backgroundColor: this.state.color}} className="plus-circle-background" /><div className="plus-circle" /><p>Create New List</p></button>
         </div>
       </main>
     )
