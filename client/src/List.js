@@ -115,6 +115,8 @@ class List extends Component {
         editListItem={this.props.editListItem}
         toggleMoveItDiv={this.toggleMoveItDiv}
         assignToList={this.props.assignToList}
+        addListItemDiv={this.state.addListItemDiv}
+        toggleAddListItemDiv={this.toggleAddListItemDiv}
        />));
     }
     let addListItemDiv;
@@ -125,8 +127,7 @@ class List extends Component {
             <button className="add-item-exit" onClick={this.toggleAddListItemDiv}><FontAwesomeIcon icon="times" /></button>
             <h4 className="new-item-header">New Item</h4>
             <button className="add-item-save" onClick={() => {this.props.addListItem(this.state.item, this.state.notes, this.props.data); this.toggleAddListItemDiv()}}>SAVE</button>
-            <label className="add-item-label" for="item">Enter item name</label>
-            <input className="add-item-name-input" type="text" name="item" onChange={this.onChange}/>
+            <input placeholder="Enter item name" className="add-item-name-input" type="text" name="item" onChange={this.onChange}/>
           </div>
           <div className="add-item-notes">
             <label className="add-item-label" for="notes">Notes</label>

@@ -15,7 +15,8 @@ class ListItem extends Component {
       editListItemDiv: false,
       moveItDiv: false,
       name: this.props.item.item,
-      note: this.props.item.note
+      note: this.props.item.note,
+      showNotes: false
     };
     this.toggleEditListItemDiv=this.toggleEditListItemDiv.bind(this);
     this.onChange=this.onChange.bind(this);
@@ -23,17 +24,19 @@ class ListItem extends Component {
     this.toggleShowNotes=this.toggleShowNotes.bind(this);
   }
   toggleEditListItemDiv() {
-    if (!this.state.moveItDiv) {
-      this.setState({editListItemDiv: !this.state.editListItemDiv});
-    }
+    if (this.props.addListItemDiv) {this.props.toggleAddListItemDiv()}
+    if (this.state.moveItDiv) {this.toggleMoveItDiv()}
+    if (this.state.showNotes) {this.toggleShowNotes()}
+    this.setState({editListItemDiv: !this.state.editListItemDiv});
   }
   onChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }
   toggleMoveItDiv(){
-    if (!this.state.editListItemDiv) {
-      this.setState({moveItDiv: !this.state.moveItDiv})
-    }
+    if (this.props.addListItemDiv) {this.props.toggleAddListItemDiv()}
+    if (this.state.editListItemDiv) {this.toggleEditListItemDiv()}
+    if (this.state.showNotes) {this.toggleShowNotes()}
+    this.setState({moveItDiv: !this.state.moveItDiv})
   }
   toggleShowNotes() {
     console.log("showing notes")
@@ -44,19 +47,18 @@ class ListItem extends Component {
       props: this.props
     })
     let editListItemDiv;
-    if (this.state.editListItemDiv) {
+    if (this.state.editListItemDiv && !this.props.addListItemDiv) {
       editListItemDiv = (
         <div className="add-list-item-div edit-list-item-div">
           <div className="add-list-item-name">
             <button className="add-item-exit" onClick={this.toggleEditListItemDiv}><FontAwesomeIcon icon="times" /></button>
             <h4 className="new-item-header">Edit Item</h4>
             <button className="add-item-save" onClick={() => {this.props.editListItem(this.props.list, this.state.name, this.state.note, this.props.item.id); this.toggleEditListItemDiv()}}>SAVE</button>
-            <label className="add-item-label" for="item">Enter item name</label>
-            <input className="add-item-name-input" type="text" defaultValue={this.props.item.item} name="name" onChange={this.onChange}/>
+            <input placeholder="Enter item name" className="add-item-name-input" id="name" type="text" defaultValue={this.props.item.item} name="name" onChange={this.onChange}/>
           </div>
           <div className="add-item-notes">
-            <label className="add-item-label" for="notes">Notes</label>
-            <Textarea className="add-item-notes-input" defaultValue={this.props.item.note} name="note" onChange={this.onChange}/>
+            <label className="add-item-label" htmlFor="note">Notes</label>
+            <Textarea className="add-item-notes-input" id="note" defaultValue={this.props.item.note} name="note" onChange={this.onChange}/>
             <button className="item-delete" onClick={() => {this.toggleEditListItemDiv(); setTimeout(this.props.deleteListItem, 50)}}>Delete</button>
           </div>
         </div>
@@ -67,16 +69,16 @@ class ListItem extends Component {
       visible = 'hidden'
     }
     let notes;
-    if (this.props.item.note && this.state.showNotes) {
+    if (this.props.item.note && this.state.showNotes && !this.props.addListItemDiv) {
       notes = (
         <div className="item-note">
-          <Textarea className="item-note-text-area" defaultValue={this.props.item.note} />
+          <Textarea className="item-note-text-area" name="note" onChange={(event) => this.props.editListItem(this.props.list, this.state.name, event.target.value, this.props.item.id)} defaultValue={this.props.item.note} />
         </div>
       )
     }
 
     let moveItDiv;
-    if (this.state.moveItDiv) {
+    if (this.state.moveItDiv && !this.props.addListItemDiv) {
       console.log({
         listProps: this.props,
       })
@@ -102,8 +104,8 @@ class ListItem extends Component {
             </div>
             <ReactCSSTransitionGroup
               transitionName="stretch-down"
-              transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}>
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={400}>
               {notes}
             </ReactCSSTransitionGroup>
           </div>

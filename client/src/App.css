@@ -157,13 +157,13 @@ input:focus, button:focus {
   animation: fade 600ms ease 200ms 1 normal forwards;
 }
 
-.login-button:hover {
-  background-color: rgba(255,0,0,.2);
-}
-
 .login-button:active {
   transform: scale(.97);
   background-color: red;
+}
+
+.login-button:hover {
+  background-color: rgba(255,0,0,.2);
 }
 
 .sign-in-button {
@@ -452,10 +452,11 @@ input:focus, button:focus {
 }
 
 .list-title {
+  min-height: 47px;
   border: none;
   position: relative;
   text-align: left;
-  background-color: rgba(255, 255, 255, .5);
+  background-color: white;
   padding: 20px 0px 8px 10px;
   margin: 5px 7px 0px 7px;
   width: 358px;
@@ -669,11 +670,12 @@ input:focus, button:focus {
 .item-note {
   display: block;
   color: white;
-  padding: 10px 0px 5px 5px;
+  padding: 5px 0px 5px 5px;
 }
 
 .item-note-text-area {
   width: 340px;
+  padding-top: 10px;
   resize: none;
   background: none;
   color: white;
@@ -754,22 +756,27 @@ input:focus, button:focus {
   border: none;
   color: inherit;
   font-size: 14px;
-  padding: 2px 5px 0px 2px;
+  padding: 5px 0px 10px 10px;
   width: 95%;
+  margin-left: 5px;
 }
 
 .add-item-name-input {
-  padding-bottom: 5px;
+  padding-bottom: 10px;
+  text-decoration: underline;
+}
+
+.add-item-name-input::placeholder {
+  color: inherit;
+  text-decoration: none;
 }
 
 .add-item-notes {
 }
 
 .add-item-notes-input {
-  margin-left: 5px;
   resize: none;
   outline: none;
-  padding: 5px;
   min-height: 100px;
 }
 
@@ -802,10 +809,6 @@ input:focus, button:focus {
 
 .add-item-save:hover {
   background-color: rgba(255,255,255,.5);
-}
-
-.add-list-item-div input {
-  padding: 10px 0px 5px 5px;
 }
 
 .edit-list-item-div {
@@ -882,8 +885,14 @@ input:focus, button:focus {
 }
 
 @keyframes stretch-right {
-  0% {width: 0vw;}
-  100% {width: 44vw;}
+  0% {
+    width: 0vw;
+    min-width: 0px;
+  }
+  100% {
+    width: 44vw;
+    min-width: 450px;
+  }
 }
 
 @keyframes stretch-right-less {
