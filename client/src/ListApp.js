@@ -118,9 +118,10 @@ class ListApp extends Component {
     });
     this.setState({lists: listArr, color: getRandomColor()});
     this.saveToServer();
-    const width = this.listsDiv.scrollWidth;
-    console.log({width: width})
+    const listsDiv = this.listsDiv;
     function scroll() {
+      const width = listsDiv.scrollWidth;
+      console.log({width: width})
       window.scrollTo({
         top: 0,
         left: width,
