@@ -118,6 +118,16 @@ class ListApp extends Component {
     });
     this.setState({lists: listArr, color: getRandomColor()});
     this.saveToServer();
+    const width = this.listsDiv.scrollWidth;
+    console.log({width: width})
+    function scroll() {
+      window.scrollTo({
+        top: 0,
+        left: width,
+        behavior: 'smooth'
+      });
+    }
+    const timeout = setTimeout(scroll, 600)
   }
   addListItem(list, value) {
     if (!value) {let value=""}
@@ -264,14 +274,22 @@ class ListApp extends Component {
       )
     })
     let profile;
-    let menuClass = "menu"
+    let menuClass = "menu";
+    let opaqueDiv;
     if (this.state.menu) {
-      profile = <Profile userData={this.state.userData} token={this.props.match.params.token} />;
-      menuClass = "menu menu-longer"
+      profile = <Profile toggleMenu={this.toggleMenu} userData={this.state.userData} token={this.props.match.params.token} />;
+      menuClass = "menu menu-longer";
+      opaqueDiv = <div className="opaque-menu" onClick={this.toggleMenu} />
     }
     return(
       <main>
         <input type="text" onFocus={(event) => event.target.select()} autocomplete="off" className="project-title" name="title" onChange={this.onChange} defaultValue={this.state.title} />
+        <ReactCSSTransitionGroup
+            transitionName="fade"
+            transitionEnterTimeout={900}
+            transitionLeaveTimeout={700}>
+          {opaqueDiv}
+        </ReactCSSTransitionGroup>
         <div className={menuClass}>
           <button className="menu-button" onClick={this.toggleMenu}><div className="menu-bars"></div></button>
           <ReactCSSTransitionGroup
@@ -281,7 +299,7 @@ class ListApp extends Component {
             {profile}
           </ReactCSSTransitionGroup>
         </div>
-        <div className="lists">
+        <div className="lists" ref={(ref) => this.listsDiv = ref}>
           <ReactCSSTransitionGroup
               transitionName="new-list"
               transitionEnterTimeout={900}

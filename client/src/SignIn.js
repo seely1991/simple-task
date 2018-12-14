@@ -70,7 +70,7 @@ class Register extends Component {
     let emailInput;
     let emailLabel;
     if (this.props.register) {
-      emailInput = <input id="email" className="register-email" type="text" onChange={this.props.onChange} name="email" />;
+      emailInput = <input onKeyPress={this.props.handleKeyPress} id="email" className="register-email" type="text" onChange={this.props.onChange} name="email" />;
       emailLabel = <label for="email" className="register-email-label">Email</label>
     }
     return (
@@ -82,9 +82,9 @@ class Register extends Component {
             <label for="password" className="register-password-label">Password</label>
           </div>
           <div className="register-sign-in-inputs">
-            <input id="name" className="register-name" type="text" onChange={this.props.onChange} name="name" />
+            <input onKeyPress={this.props.handleKeyPress} id="name" className="register-name" type="text" onChange={this.props.onChange} name="name" />
             {emailInput}
-            <input id="password" className="register-password" type="password" onChange={this.props.onChange} name="password" />
+            <input onKeyPress={this.props.handleKeyPress} id="password" className="register-password" type="password" onChange={this.props.onChange} name="password" />
           </div>
         </form>
       </div>

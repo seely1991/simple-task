@@ -34,6 +34,7 @@ class Home extends Component {
     this.toggleRegister=this.toggleRegister.bind(this);
     this.registerSubmit=this.registerSubmit.bind(this);
     this.loginSubmit=this.loginSubmit.bind(this);
+    this.handleKeyPress=this.handleKeyPress.bind(this);
   }
   onChange(event) {
     console.log({changed: this.state})
@@ -99,6 +100,15 @@ class Home extends Component {
       console.log(this.state)
     })
   }
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      if (this.state.signIn) {
+        this.loginSubmit()
+      }else if (this.state.register) {
+        this.registerSubmit(event);
+      }
+    }
+  }
   componentDidMount() {
     const token = window.localStorage.getItem('token');
     if (token) {
@@ -148,11 +158,11 @@ class Home extends Component {
       blackDivAnm = "stretch-left";
     }
     if (this.state.signIn && !this.state.userData) {
-      inputs = <SignIn toggleRegister={this.toggleRegister} onChange={this.onChange} toggleSignIn={this.toggleSignIn}/>;
+      inputs = <SignIn handleKeyPress={this.handleKeyPress} toggleRegister={this.toggleRegister} onChange={this.onChange} toggleSignIn={this.toggleSignIn}/>;
       loginButton = <button className="login-button sign-in-button" onClick={this.loginSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
       goToRegister = <button className="go-to-register" type="button" onClick={this.toggleRegister}>register an account</button>
     }else if (this.state.register && !this.state.userData) {
-      inputs = <SignIn register={true} onChange={this.onChange} toggleRegister={this.toggleRegister} />;
+      inputs = <SignIn handleKeyPress={this.handleKeyPress} register={true} onChange={this.onChange} toggleRegister={this.toggleRegister} />;
       loginButton = <button className="login-button sign-in-button" onClick={this.registerSubmit} type="button"><FontAwesomeIcon icon="chevron-right" /></button>;
     }
     if (this.state.userData) {

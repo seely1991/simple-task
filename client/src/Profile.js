@@ -80,7 +80,6 @@ class Profile extends Component {
           <button className="delete-project" onClick={() => this.deleteProject(x._id)}><FontAwesomeIcon icon="trash" /></button>
         </div>
       ));
-    if (this)
     return (
       <div>
         <div className="user-letter" style={{backgroundColor: this.state.userData.profileColor}}>{this.state.userData.name[0].toUpperCase()}</div>

@@ -200,8 +200,9 @@ input:focus, button:focus {
   width: 90px;
   border-radius: 50%;
   color: rgba(0,0,0,.4);
-  font-size: 70px;
+  font-size: 55px;
   text-align: center;
+  line-height: 90px;
   margin: 130px 10px 10px 30px;
   display: inline-block;
 }
@@ -370,6 +371,14 @@ input:focus, button:focus {
   position: absolute;
   margin: 10px;
   right: 0px;
+}
+
+.opaque-menu {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(255,255,255,.7);
+  z-index: 3;
 }
 
 /*register div*/
