@@ -197,7 +197,7 @@ class Home extends Component {
       profile = <Profile userData={this.state.userData} token={this.state.token} />
       console.log({profile: profile, loginButton: loginButton})
     }
-    if (this.state.message && !this.state.profile) {
+    if (this.state.register || this.state.signIn && this.state.message) {
       console.log({number: this.state.errorNumber});
       message = <div className="error-message" key={this.state.errorNumber}>{this.state.message}</div>
     }
