@@ -70,6 +70,7 @@ class Profile extends Component {
       })
       .then(res => res.json())
       .then(res => this.setState({userData: res.userData}))
+      if (projectId === this.props.projectId) {window.location = "/"};
     }
   }
   render() {

@@ -113,12 +113,12 @@ app.get('/me', (req, res, next) => {
 
 	jwt.verify(token, process.env.SECRET, (err, decoded) => {
 		if (err) {
-			return res.status(500).send({ auth: false, message: 'failed to authenticate token'})
+			return res.status(500).json({ auth: false, message: 'failed to authenticate token'})
 		}
 		user.findById(decoded.id, { password: 0}, (err, data) => {
-			if (err) return res.status(500).send("there was a problem finding the user");
-			if (!data) return res.status(404).send('no user found');
-			res.status(200).send(data);
+			if (err) return res.status(500).json({message: "there was a problem finding the user"});
+			if (!data) return res.status(404).json({message: 'no user found'});
+			res.status(200).json(data);
 		})
 	});
 });

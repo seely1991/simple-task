@@ -118,7 +118,7 @@ class ListApp extends Component {
       key: this.getRandomKey('li')
     });
     this.setState({lists: listArr, color: getRandomColor()});
-    this.saveToServer();
+    this.updateProject();
     const listsDiv = this.listsDiv;
     function scroll() {
       const width = listsDiv.scrollWidth;
@@ -141,7 +141,7 @@ class ListApp extends Component {
       id: this.getRandomKey("item")
     })
     this.setState({lists: listArr});
-    this.saveToServer();
+    this.updateProject();
   }
   oldAddListItem(item, note, list) {
     if (!item) {return}
@@ -153,7 +153,7 @@ class ListApp extends Component {
       id: this.getRandomKey("item")
     })
     this.setState({lists: listArr});
-    this.saveToServer();
+    this.updateProject();
   }
   deleteList(list) {
     const confirmed = window.confirm("You are about to delete this list with all of it's contents permanently. Are you sure you want to continue?")
@@ -162,7 +162,7 @@ class ListApp extends Component {
       const index = listArr.indexOf(list);
       listArr.splice(index, 1);
       this.setState({lists: listArr});
-      this.saveToServer();
+      this.updateProject();
     }
   }
   deleteListItem(list, item) {
@@ -176,7 +176,7 @@ class ListApp extends Component {
     thisList.items = listItems;
     listArr.splice(listIndex, 1, thisList);
     this.setState({lists: listArr});
-    this.saveToServer();
+    this.updateProject();
   }
   editList(list, title) {
     if (!title) {return}
@@ -186,13 +186,13 @@ class ListApp extends Component {
     listArr.splice(index, 1, list);
     this.setState({lists: listArr});
     console.log({message: 'making list title', title: title, state: this.state.lists[index]});
-    this.saveToServer();
+    this.updateProject();
   }
   assignToList(currentList, newList, item) {
     console.log(item);
     this.oldAddListItem(item.item, item.note, newList);
     this.deleteListItem(currentList, item);
-    this.saveToServer();
+    this.updateProject();
   }
   editListItem(list, name, note, id) {
     if (!name) {return}
@@ -209,7 +209,7 @@ class ListApp extends Component {
     listArr[listIndex] = list;
     this.setState({lists: listArr});
     console.log({editedList: this.state});
-    this.saveToServer();
+    this.updateProject();
   }
   changeTheme(list, color) {
     const listArr = this.state.lists;
@@ -217,7 +217,7 @@ class ListApp extends Component {
     list.color = color;
     listArr.splice(listIndex, 1, list);
     this.setState({lists: listArr});
-    this.saveToServer();
+    this.updateProject();
   }
   toggleMenu() {
     this.setState({menu: !this.state.menu})
@@ -233,11 +233,18 @@ class ListApp extends Component {
           "x-access-token": this.props.match.params.token
         }
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(res => {
+        if (res.message) {
+          console.log({message: res.message, res: res});
+          return
+        }
         if (this.props.match.params.id) {
-          res = JSON.parse(res);
           const project = res.projects.filter(x => x._id === this.props.match.params.id)[0];
+          if (!project) {
+            console.log("project not found");
+            window.location = "/"
+          }
           console.log({project: project})
           this.setState({
             userData: res,
@@ -272,7 +279,7 @@ class ListApp extends Component {
     let opaqueDiv;
     let savingDiv;
     if (this.state.menu) {
-      profile = <Profile toggleMenu={this.toggleMenu} userData={this.state.userData} token={this.props.match.params.token} />;
+      profile = <Profile toggleMenu={this.toggleMenu} projectId={this.props.match.params.id} userData={this.state.userData} token={this.props.match.params.token} />;
       menuClass = "menu menu-longer";
       opaqueDiv = <div className="opaque-menu" onClick={this.toggleMenu} />
     }
