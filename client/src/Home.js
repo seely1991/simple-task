@@ -93,7 +93,7 @@ class Home extends Component {
       }
       console.log(res);
       window.localStorage.setItem('token', res.token)
-      this.setState({token: res.token, userData: res.userData})
+      this.setState({token: res.token, userData: res.userData, message: ''})
       console.log({state: this.state})
     })
   }
@@ -119,7 +119,7 @@ class Home extends Component {
         return
       }
       window.localStorage.setItem('token', res.token)
-      this.setState({token: res.token, userData: res.userData})
+      this.setState({token: res.token, userData: res.userData, message: ''})
       console.log(this.state)
     })
   }
