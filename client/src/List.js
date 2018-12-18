@@ -174,7 +174,7 @@ class List extends Component {
               {addListItemDiv}
             </ReactCSSTransitionGroup>
             <div className="add-list-item-button-div">
-              <button className="add-list-item" style={{visibility: listItemVisibility}} onClick={() => this.toggleAddListItemDiv()}><div className="plus-circle" /></button>
+              <button className={this.state.addListItemDiv?"add-list-item add-list-item-selected":"add-list-item"} style={{visibility: listItemVisibility}} onClick={() => { !this.state.addListItemDiv?this.toggleAddListItemDiv():this.props.addListItem(this.state.item, this.state.notes, this.props.data);this.toggleAddListItemDiv()}}><div className="plus-circle" /></button>
             </div>
           </div>
       )

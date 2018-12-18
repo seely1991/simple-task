@@ -41,7 +41,8 @@ class ListApp extends Component {
       lists: [],
       editListDiv: false,
       color: '',
-      menu: false
+      menu: false,
+      saving: ''
     };
     this.getRandomKey=this.getRandomKey.bind(this);
     this.onChange=this.onChange.bind(this);
@@ -55,7 +56,6 @@ class ListApp extends Component {
     this.editListItem=this.editListItem.bind(this);
     this.changeTheme=this.changeTheme.bind(this);
     this.updateProject=this.updateProject.bind(this);
-    this.saveToServer=this.saveToServer.bind(this);
     this.toggleMenu=this.toggleMenu.bind(this);
     //this.addListItem=this.addListItem.bind(this);
   }
@@ -80,6 +80,7 @@ class ListApp extends Component {
     }
   }
   updateProject() {
+    this.setState({saving: 'saving'});
     let body = {
       title: this.state.title,
       lists: this.state.lists,
@@ -96,7 +97,7 @@ class ListApp extends Component {
       body: JSON.stringify(body)
     })
     .then(res => res.text())
-    .then(res => console.log(res))
+    .then(res => this.setState({saving: res}))
   }
   saveToServer() {
     clearTimeout(this.saving);
@@ -210,11 +211,6 @@ class ListApp extends Component {
     console.log({editedList: this.state});
     this.saveToServer();
   }
-  asdeditListItem(list, value, id) {
-    const listArr = this.state.lists;
-    const listIndex = listArr.indexOf(list);
-    const itemIndex = list.items.indexOf(id);
-  }
   changeTheme(list, color) {
     const listArr = this.state.lists;
     const listIndex = listArr.findIndex(x => JSON.stringify(x) === JSON.stringify(list));
@@ -222,9 +218,6 @@ class ListApp extends Component {
     listArr.splice(listIndex, 1, list);
     this.setState({lists: listArr});
     this.saveToServer();
-  }
-  saveList() {
-
   }
   toggleMenu() {
     this.setState({menu: !this.state.menu})
@@ -277,14 +270,17 @@ class ListApp extends Component {
     let profile;
     let menuClass = "menu";
     let opaqueDiv;
+    let savingDiv;
     if (this.state.menu) {
       profile = <Profile toggleMenu={this.toggleMenu} userData={this.state.userData} token={this.props.match.params.token} />;
       menuClass = "menu menu-longer";
       opaqueDiv = <div className="opaque-menu" onClick={this.toggleMenu} />
     }
+    if (this.state.saving) {savingDiv = <div className="saving-message">{this.state.saving}</div>}
     return(
       <main>
         <input type="text" onFocus={(event) => event.target.select()} autocomplete="off" className="project-title" name="title" onChange={this.onChange} defaultValue={this.state.title} />
+        {savingDiv}
         <ReactCSSTransitionGroup
             transitionName="fade"
             transitionEnterTimeout={900}

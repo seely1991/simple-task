@@ -143,7 +143,7 @@ app.put('/update', (req, res) => {
 			data.markModified("projects");
 			data.save((err, data) => {
 				console.log("saved")
-				res.status(200).send("saved")
+				res.status(200).send("all changes saved")
 			});
 		})
 	})

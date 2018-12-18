@@ -440,12 +440,20 @@ input:focus, button:focus {
   border: none;
   display: block;
   position: fixed;
+  top: 1px;
   text-align: center;
   width: 100%;
   font-size: 18px;
   font-style: italic;
   margin-top: 3px;
   color: black;
+}
+
+.saving-message {
+  position: fixed;
+  top: 25px;
+  left: 70px;
+  color: rgba(0,0,0,.3);
 }
 
 /*initial css styling*/
@@ -670,6 +678,11 @@ input:focus, button:focus {
   color: rgba(255,255,255,.4);
   font-size: 34px;
   margin-bottom: 30px;
+  transition: color 300ms;
+}
+
+.add-list-item-selected {
+  color: rgba(0,0,0,.3);
 }
 
 .new-item-note {

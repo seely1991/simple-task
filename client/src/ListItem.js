@@ -116,7 +116,6 @@ class ListItem extends Component {
             {editListItemDiv}
           </ReactCSSTransitionGroup>
         </div>
-
         <ReactCSSTransitionGroup
             transitionName="stretch-down"
             transitionEnterTimeout={300}
