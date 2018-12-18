@@ -45,8 +45,9 @@ app.post('/register', (req, res, next) => {
 	user.findOne({name: req.body.name}, (err, data) => {
 		console.log('searching for one')
 		if (err) {
+			res.json({message: 'something went wrong with the server'})
 		}else if(data) {
-			res.send('username and/or email taken')
+			res.json({message: 'username and/or email taken'})
 		}else{
 			return next();
 		}

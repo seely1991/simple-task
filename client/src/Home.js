@@ -27,7 +27,8 @@ class Home extends Component {
     this.state = {
       signIn: false,
       register: false,
-      profile: false
+      profile: false,
+      errorNumber: 0
     };
     this.onChange=this.onChange.bind(this);
     this.toggleSignIn=this.toggleSignIn.bind(this);
@@ -53,7 +54,18 @@ class Home extends Component {
       password: this.state.password,
       profileColor: getRandomColor()
     }
-
+    if (!body.name) {
+      this.setState({message: "username required", errorNumber: this.state.errorNumber + 1});
+      return
+    }
+    if (!body.email) {
+      this.setState({message: "email required", errorNumber: this.state.errorNumber + 1});
+      return
+    }
+    if (!body.password) {
+      this.setState({message: "password required", errorNumber: this.state.errorNumber + 1});
+      return
+    }
     let formBody = [];
     for (var property in body) {
       console.log({[property]: body[property]})
@@ -73,10 +85,13 @@ class Home extends Component {
       },
       body: formBody
     })
-    .then(res => res.text())
+    .then(res => res.json())
     .then(res => {
+      if (res.message) {
+        this.setState({message: res.message, errorNumber: this.state.errorNumber + 1})
+        return
+      }
       console.log(res);
-      res = JSON.parse(res);
       window.localStorage.setItem('token', res.token)
       this.setState({token: res.token, userData: res.userData})
       console.log({state: this.state})
@@ -87,12 +102,20 @@ class Home extends Component {
       stateName: this.state.name,
       statePass: this.state.password
     })
+    if (!this.state.name) {
+      this.setState({message: "please enter a username", errorNumber: this.state.errorNumber +1});
+      return
+    }
+    if (!this.state.password) {
+      this.setState({message: "please enter a password", errorNumber: this.state.errorNumber +1});
+      return
+    }
     fetch('/signIn?name=' + this.state.name + '&password=' + this.state.password)
     .then(res => res.json())
     .then(res => {
-      console.log(res);
       if (res.message) {
-        console.log(res.message);
+        this.setState({message: res.message, errorNumber: this.state.errorNumber + 1})
+        console.log(this.state)
         return
       }
       window.localStorage.setItem('token', res.token)
@@ -143,6 +166,7 @@ class Home extends Component {
     let description;
     let profile;
     let localToken = window.localStorage.getItem('token');
+    let message;
     if (!localToken) {
       description = (
         <p className="home-description">
@@ -173,6 +197,10 @@ class Home extends Component {
       profile = <Profile userData={this.state.userData} token={this.state.token} />
       console.log({profile: profile, loginButton: loginButton})
     }
+    if (this.state.message && !this.state.profile) {
+      console.log({number: this.state.errorNumber});
+      message = <div className="error-message" key={this.state.errorNumber}>{this.state.message}</div>
+    }
     return(
       <div className="home-white-div">
         <ReactCSSTransitionGroup
@@ -181,6 +209,7 @@ class Home extends Component {
           transitionLeaveTimeout={500}>
           {title}
         </ReactCSSTransitionGroup>
+        {message}
         <ReactCSSTransitionGroup
           transitionName="fade"
           transitionEnterTimeout={500}

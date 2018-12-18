@@ -383,6 +383,16 @@ input:focus, button:focus {
 
 /*register div*/
 
+.error-message {
+  position: absolute;
+  right: 240px;
+  top: 100px;
+  color: red;
+  width: 240px;
+  text-align: center;
+  animation: fade .5s 0s forwards;
+}
+
 .register-sign-in-form {
   position: absolute;
   right: 240px;
