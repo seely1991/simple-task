@@ -118,6 +118,7 @@ app.get('/me', (req, res, next) => {
 		user.findById(decoded.id, { password: 0}, (err, data) => {
 			if (err) return res.status(500).json({message: "there was a problem finding the user"});
 			if (!data) return res.status(404).json({message: 'no user found'});
+			consle.log('found a user');
 			res.status(200).json(data);
 		})
 	});

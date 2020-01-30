@@ -19,22 +19,31 @@ class Register extends Component {
   render() {
     let emailInput;
     let emailLabel;
+    let passwordConfirm;
+    let passwordConfirmLabel;
+    let passwordValidationText;
     if (this.props.register) {
-      emailInput = <input  onKeyPress={this.props.handleKeyPress} reduired id="email" className="register-email" type="text" onChange={this.props.onChange} name="email" />;
-      emailLabel = <label for="email" className="register-email-label">Email</label>
+      emailInput = <input  onKeyPress={this.props.handleKeyPress} required id="email" className="register-email" type="text" onChange={this.props.onChange} name="email" />;
+      emailLabel = <label htmlFor="email" className="register-email-label">Email</label>
+      passwordConfirm = <input onKeyPress={this.props.handleKeyPress} id="password2" className="register-password" type="password" onChange={this.props.onChange} name="password2" />
+      passwordConfirmLabel = <label htmlFor="password2" className="register-password-label">Confirm Password</label>
+      passwordValidationText = <p>Must be 7 to 16 characters and include at least 1 letter, 1 number and 1 symbol</p>
     }
     return (
       <div className="sign-in-div">
         <form className="register-sign-in-form">
           <div className="register-sign-in-labels">
-            <label for="name" required className="register-name-label">Username</label>
+            <label htmlFor="name" required className="register-name-label">Username</label>
             {emailLabel}
-            <label for="password" required className="register-password-label">Password</label>
+            <label htmlFor="password" required className="register-password-label">Password</label>
+            {passwordConfirmLabel}
           </div>
           <div className="register-sign-in-inputs">
             <input onKeyPress={this.props.handleKeyPress} id="name" className="register-name" type="text" onChange={this.props.onChange} name="name" />
             {emailInput}
             <input onKeyPress={this.props.handleKeyPress} id="password" className="register-password" type="password" onChange={this.props.onChange} name="password" />
+            {passwordConfirm}
+            {passwordValidationText}
           </div>
         </form>
       </div>

@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import Register from './Register.js';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
@@ -79,10 +78,6 @@ class Header extends Component {
         </div>
       )
     }
-    let register;
-    if (this.state.register) {
-      register = <Register toggleRegister={this.toggleRegister} />
-    }
     let signIn;
     if (this.state.signIn) {
       signIn = <SignIn toggleRegister={this.toggleRegister} toggleSignIn={this.toggleSignIn} />
@@ -101,7 +96,6 @@ class Header extends Component {
         <button className="menu-button" onClick={this.toggleMenu} style={{backgroundColor: this.state.menu?'rgba(255,255,255,.3)':'black'}}><div className="menu-bars"></div></button>
         {menu}
         {signIn}
-        {register}
       </header>
     )
   }

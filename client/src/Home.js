@@ -28,6 +28,7 @@ class Home extends Component {
       signIn: false,
       register: false,
       profile: false,
+      //errorNumber is for id's for the error message divs
       errorNumber: 0
     };
     this.onChange=this.onChange.bind(this);
@@ -52,8 +53,10 @@ class Home extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
+      password2: this.state.password2,
       profileColor: getRandomColor()
     }
+
     if (!body.name) {
       this.setState({message: "username required", errorNumber: this.state.errorNumber + 1});
       return
@@ -66,6 +69,17 @@ class Home extends Component {
       this.setState({message: "password required", errorNumber: this.state.errorNumber + 1});
       return
     }
+    if (body.password !== body.password2) {
+      this.setState({message: "passwords do not match", errorNumber: this.state.errorNumber + 1});
+      return
+    }
+    /*
+    regExp not functioning
+    if (!RegExp('^\w{7,16}$').test(body.password)) {
+      this.setState({message: "password must be between 7 and 16 characters", errorNumber: this.state.errorNumber + 1});
+      return
+    }
+    */
     let formBody = [];
     for (var property in body) {
       console.log({[property]: body[property]})
@@ -144,7 +158,7 @@ class Home extends Component {
           "x-access-token": token
         }
       })
-      .then(res => res.json())
+      .then(res => res.json() )
       .then(res => {
         if (res.projects) {
           this.setState({
