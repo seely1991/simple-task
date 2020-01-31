@@ -14,13 +14,18 @@ import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
+
+//transitions
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+//components for list items, lists, and the profile section
 import ListItem from './ListItem.js';
 import List from './List';
 import Profile from './Profile.js';
 
 library.add(faPlusCircle, faTimesCircle, faEdit, faChevronLeft, faChevronRight, faCog, faBars);
 
+//colors able to be chosen form for lists
 let randomColors = ['#EB6738', '#F0A3BA', '#949494', '#F2D197', '#DF89FD', '#8A83E1'];
 
 function getRandomColor() {
@@ -60,16 +65,20 @@ class ListApp extends Component {
     //this.addListItem=this.addListItem.bind(this);
   }
   getRandomKey(suffix) {
+    //use this to get a key for each list, list item. Requires a suffix so all similar keys have the same suffix
     const divKeys = [];
+    //console logs all the current keys into this array
     this.state.lists.map((x) => divKeys.push(x.key));
     console.log({divKeys: divKeys});
     let key = suffix + Math.floor(Math.random() * 1000000).toString();
     if (!divKeys.includes(key)) {
+      //what to do if key is not already generated
       divKeys.push(key);
       console.log({returnedKeyFirstTry: key})
       return key;
     }else{
       while (divKeys.includes(key)) {
+        //what to do if key is already generated, redefines key and tries again, until divKeys does not include it's value
         key = suffix + (Math.floor(Math.random() * 1000000)).toString();
         if (!divKeys.includes(key)) {
           divKeys.push(key);
@@ -80,6 +89,7 @@ class ListApp extends Component {
     }
   }
   updateProject() {
+    //saves project
     this.setState({saving: 'saving'});
     let body = {
       title: this.state.title,
@@ -100,15 +110,18 @@ class ListApp extends Component {
     .then(res => this.setState({saving: res}))
   }
   saveToServer() {
+    //saves to server and clears the timeout
     clearTimeout(this.saving);
     this.saving = setTimeout(this.updateProject, 1500);
   }
   onChange(event) {
+    //saves after every change (after waiting for the timeout)
     this.saveToServer();
     this.setState({[event.target.name]: event.target.value});
     console.log({state: this.state})
   }
   addList() {
+    //adds a list with the default list name 'List 1' or similar name
     this.setState({defaultListNumber: this.state.defaultListNumber + 1});
     const listArr = this.state.lists;
     listArr.push({
@@ -129,15 +142,18 @@ class ListApp extends Component {
         behavior: 'smooth'
       });
     }
+    //scrolls the screen to match the animation, 600 is the width of a list in pixels
     const timeout = setTimeout(scroll, 600)
   }
   addListItem(list, value) {
+    //adds an item to the list, even if the value is empty
     if (!value) {let value=""}
     console.log({value: value})
     const listArr = this.state.lists;
     const index = listArr.findIndex(x => JSON.stringify(x) === JSON.stringify(list));
     listArr[index].items.push({
       value: value,
+      //creates a unique key that can be referenced later
       id: this.getRandomKey("item")
     })
     this.setState({lists: listArr});
