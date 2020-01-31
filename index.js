@@ -87,6 +87,7 @@ app.get('/signIn', (req, res, next) => {
 		console.log(data);
 		if (err) return res.status(500).json({message: "there was a problem finding the user"});
 		if (!data) return res.status(404).json({message: "no user found"});
+		if (!RegExp(/(?=.*\d)(?=.*\w)(?=.*\W)/).test(body.password))  return res.status(500).json({message: "password did not meet validation"})
 		var isPassword = bcrypt.compareSync(req.query.password, data.password);
 		console.log({isPassword: isPassword});
 		var token = jwt.sign({ id: data._id }, process.env.SECRET, {

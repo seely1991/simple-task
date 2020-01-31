@@ -73,13 +73,14 @@ class Home extends Component {
       this.setState({message: "passwords do not match", errorNumber: this.state.errorNumber + 1});
       return
     }
-    /*
-    regExp not functioning
-    if (!RegExp('^\w{7,16}$').test(body.password)) {
+    if (!RegExp(/^.{7,16}$/).test(body.password)) {
       this.setState({message: "password must be between 7 and 16 characters", errorNumber: this.state.errorNumber + 1});
       return
     }
-    */
+    if (!RegExp(/(?=.*\d)(?=.*\w)(?=.*\W)/).test(body.password)) {
+      this.setState({message: "password must contain at least one letter, one number and one symbol", errorNumber: this.state.errorNumber + 1});
+      return
+    }
     let formBody = [];
     for (var property in body) {
       console.log({[property]: body[property]})
