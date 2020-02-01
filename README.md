@@ -4,4 +4,4 @@ Simple Task is a web-app for organizing to-do lists by tracking progress. The pu
 
 Made using React.js and Node/Express with a MongoDB database.
 
-[Deployed on Heroku](https:simple-task-1209.herokuapp.com)
+[Deployed on Heroku](https://simple-task-1209.herokuapp.com)
